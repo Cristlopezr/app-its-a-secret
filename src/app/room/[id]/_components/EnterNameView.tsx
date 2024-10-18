@@ -1,3 +1,5 @@
+import { enterNameViewSchema } from '@/app/schemas/schemas';
+import { useGameStore } from '@/app/store/store';
 import { Button } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -13,11 +15,10 @@ interface Props {
     setSocketId: (socketId: string) => void;
 }
 
-const enterNameViewSchema = z.object({
-    username: z.string().min(1, 'Invalid username'),
-});
-
 export const EnterNameView = ({ socketId, code, setShowRoomView, setSocketId }: Props) => {
+    const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
+    const singlePlayer = useGameStore(state => state.singlePlayer);
+
     const form = useForm<z.infer<typeof enterNameViewSchema>>({
         resolver: zodResolver(enterNameViewSchema),
         defaultValues: {
@@ -28,6 +29,10 @@ export const EnterNameView = ({ socketId, code, setShowRoomView, setSocketId }: 
     const onSubmit = (values: { username: string }) => {
         const { username } = values;
         setShowRoomView(true);
+        setSinglePlayer({
+            ...singlePlayer!,
+            username,
+        });
         setSocketId(socketId ? socketId : socket.id!);
         sessionStorage.setItem('id', socketId ? socketId : socket.id!);
         socket.emit('join-room', { socketId: socketId ?? socket.id, code, username });

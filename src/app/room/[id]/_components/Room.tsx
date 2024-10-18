@@ -8,18 +8,17 @@ import { z } from 'zod';
 import { PlayerRoomView } from './PlayerRoomView';
 import { EnterNameView } from './EnterNameView';
 import { EnterCodeForm } from '../../_components/EnterCodeForm';
-
-const JoinFormSchema = z.object({
-    code: z.string().trim().min(8, 'Invalid code').max(8, 'Invalid code'),
-});
+import { useGameStore } from '@/app/store/store';
+import { joinFormSchema } from '@/app/schemas/schemas';
 
 export const Room = () => {
     const [socketId, setSocketId] = useState(sessionStorage.getItem('id') ?? undefined);
     const [code, setCode] = useState(sessionStorage.getItem('code') ?? undefined);
     const [showRoomView, setShowRoomView] = useState(false);
+    const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
 
-    const form = useForm<z.infer<typeof JoinFormSchema>>({
-        resolver: zodResolver(JoinFormSchema),
+    const form = useForm<z.infer<typeof joinFormSchema>>({
+        resolver: zodResolver(joinFormSchema),
         defaultValues: {
             code: '',
         },
@@ -31,6 +30,9 @@ export const Room = () => {
         }
 
         socket.on('user-checked', payload => {
+            if (payload.isUserInRoom) {
+                setSinglePlayer(payload.player);
+            }
             setShowRoomView(payload.isUserInRoom);
         });
 
@@ -57,7 +59,6 @@ export const Room = () => {
         socket.emit('enter-code', { code });
     };
 
-    //First time entering
     if (!code) {
         return <EnterCodeForm form={form} onSubmit={onSubmit} />;
     }

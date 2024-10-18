@@ -7,16 +7,15 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { EnterCodeForm } from './EnterCodeForm';
-
-const JoinFormSchema = z.object({
-    code: z.string().trim().min(8, 'Invalid code').max(8, 'Invalid code'),
-});
+import { useGameStore } from '@/app/store/store';
+import { joinFormSchema } from '@/app/schemas/schemas';
 
 export const JoinRoomForm = () => {
     const router = useRouter();
+    const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
 
-    const form = useForm<z.infer<typeof JoinFormSchema>>({
-        resolver: zodResolver(JoinFormSchema),
+    const form = useForm<z.infer<typeof joinFormSchema>>({
+        resolver: zodResolver(joinFormSchema),
         defaultValues: {
             code: '',
         },
@@ -24,6 +23,12 @@ export const JoinRoomForm = () => {
 
     useEffect(() => {
         socket.on('correct-code', payload => {
+            setSinglePlayer({
+                id: socket.id!,
+                role: 'Player',
+                username: '',
+            });
+            sessionStorage.setItem('id', socket.id!);
             sessionStorage.setItem('code', payload.code);
             router.push(`/room/${payload.roomId}`);
         });
@@ -35,8 +40,6 @@ export const JoinRoomForm = () => {
 
     const onSubmit = (values: { code: string }) => {
         const { code } = values;
-        sessionStorage.setItem('id', socket.id!);
-        sessionStorage.setItem('referrer', 'true');
         socket.emit('enter-code', { code });
     };
 
