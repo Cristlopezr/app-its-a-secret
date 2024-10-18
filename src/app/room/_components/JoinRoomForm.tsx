@@ -12,7 +12,6 @@ import { z } from 'zod';
 
 const JoinFormSchema = z.object({
     code: z.string().trim().min(8, 'Invalid code').max(8, 'Invalid code'),
-    username: z.string().min(1, 'Invalid username'),
 });
 
 export const JoinRoomForm = () => {
@@ -22,12 +21,12 @@ export const JoinRoomForm = () => {
         resolver: zodResolver(JoinFormSchema),
         defaultValues: {
             code: '',
-            username: '',
         },
     });
 
     useEffect(() => {
         socket.on('correct-code', payload => {
+            sessionStorage.setItem('code', payload.code);
             router.push(`/room/${payload.roomId}`);
         });
 
@@ -36,28 +35,16 @@ export const JoinRoomForm = () => {
         };
     }, []);
 
-    const onSubmit = (values: { code: string; username: string }) => {
-        const { username, code } = values;
-        //guardar socketId en el sessionStorage
-        socket.emit('enter-code', { code, username });
+    const onSubmit = (values: { code: string }) => {
+        const { code } = values;
+        sessionStorage.setItem('id', socket.id!);
+        sessionStorage.setItem('referrer', 'true');
+        socket.emit('enter-code', { code });
     };
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-                <FormField
-                    control={form.control}
-                    name='username'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Username</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
                 <FormField
                     control={form.control}
                     name='code'
