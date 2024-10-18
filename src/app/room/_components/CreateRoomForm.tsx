@@ -10,6 +10,7 @@ export const CreateRoomForm = () => {
 
     useEffect(() => {
         socket.on('room-created', payload => {
+            sessionStorage.setItem('id', socket.id!);
             sessionStorage.setItem('code', payload.code);
             router.push(`/room/${payload.roomId}`);
         });
@@ -20,8 +21,6 @@ export const CreateRoomForm = () => {
     }, []);
 
     const onCreateRoom = () => {
-        sessionStorage.setItem('id', socket.id!);
-        sessionStorage.setItem('referrer', 'true');
         socket.emit('create-room');
     };
 
