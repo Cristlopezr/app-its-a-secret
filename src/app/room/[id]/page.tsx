@@ -1,6 +1,9 @@
-import { notFound } from 'next/navigation';
+import { Room } from './_components/Room';
 
 export default function Page() {
-
-    return <h1>Room</h1>;
+    return (
+        <div>
+            <Room />
+        </div>
+    );
 }

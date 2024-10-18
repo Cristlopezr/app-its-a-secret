@@ -1,18 +1,11 @@
-'use client';
+import { CreateRoomForm } from './room/_components/CreateRoomForm';
+import { JoinRoomForm } from './room/_components/JoinRoomForm';
 
-import { Button } from '@/components/ui';
-import { socket } from '@/lib/socket';
-import { useRouter } from 'next/navigation';
 export default function Home() {
-    const router = useRouter();
-
-    const onCreateRoom = () => {
-        socket.emit('create-room');
-    };
-
     return (
         <div className=''>
-            <Button onClick={onCreateRoom}>Create Room</Button>
+            <CreateRoomForm />
+            <JoinRoomForm />
         </div>
     );
 }
