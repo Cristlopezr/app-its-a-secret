@@ -1,20 +1,19 @@
-'use client';
-
 import { useGameStore } from '@/app/store/store';
 import { socket } from '@/lib/socket';
 import { useEffect } from 'react';
+import { AdminView } from './AdminView';
+import { PlayerView } from './PlayerView';
 
-export const PlayerRoomView = () => {
+export const RoomView = () => {
     const setPlayers = useGameStore(state => state.setPlayers);
-    const setRoomStatus = useGameStore(state => state.setRoomStatus);
+    const setRoom = useGameStore(state => state.setRoom);
     const singlePlayer = useGameStore(state => state.singlePlayer);
-    const roomStatus = useGameStore(state => state.roomStatus);
-    const players = useGameStore(state => state.players);
 
     useEffect(() => {
         socket.on('joined-room', payload => {
+            console.log('IM HERE', payload.players);
             setPlayers(payload.players);
-            setRoomStatus(payload.roomStatus);
+            setRoom(payload.room);
         });
         return () => {
             socket.off('joined-room');
@@ -22,13 +21,8 @@ export const PlayerRoomView = () => {
     }, []);
 
     if (singlePlayer && singlePlayer.role === 'Admin') {
-        return <div>Soy admin {JSON.stringify(singlePlayer, null, 2)}</div>;
+        return <AdminView />;
     }
 
-    return (
-        <div>
-            players: {JSON.stringify(players, null, 2)}
-            room Status : {roomStatus}
-        </div>
-    );
+    return <PlayerView />;
 };

@@ -1,5 +1,4 @@
 import { enterNameViewSchema } from '@/app/schemas/schemas';
-import { useGameStore } from '@/app/store/store';
 import { Button } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -9,34 +8,16 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 interface Props {
-    socketId?: string;
-    code: string;
-    setShowRoomView: (state: boolean) => void;
-    setSocketId: (socketId: string) => void;
+    onSubmit: (values: { username: string }) => void;
 }
 
-export const EnterNameView = ({ socketId, code, setShowRoomView, setSocketId }: Props) => {
-    const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
-    const singlePlayer = useGameStore(state => state.singlePlayer);
-
+export const EnterNameView = ({ onSubmit }: Props) => {
     const form = useForm<z.infer<typeof enterNameViewSchema>>({
         resolver: zodResolver(enterNameViewSchema),
         defaultValues: {
             username: '',
         },
     });
-
-    const onSubmit = (values: { username: string }) => {
-        const { username } = values;
-        setShowRoomView(true);
-        setSinglePlayer({
-            ...singlePlayer!,
-            username,
-        });
-        setSocketId(socketId ? socketId : socket.id!);
-        sessionStorage.setItem('id', socketId ? socketId : socket.id!);
-        socket.emit('join-room', { socketId: socketId ?? socket.id, code, username });
-    };
 
     return (
         <Form {...form}>

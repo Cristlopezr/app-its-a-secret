@@ -7,3 +7,17 @@ export interface Player {
 }
 
 export type RoomStatus = 'waiting' | 'started';
+
+interface Secret {
+    id: string;
+    playerId: string;
+    secret: string;
+}
+
+export interface Room {
+    id: string;
+    code: string;
+    roomStatus: RoomStatus;
+    players: Player[];
+    secrets: Secret[];
+}
