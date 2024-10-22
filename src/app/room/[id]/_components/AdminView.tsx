@@ -11,21 +11,10 @@ const MAX_PLAYERS = 1;
 export const AdminView = () => {
     const room = useGameStore(state => state.room);
     const setRoom = useGameStore(state => state.setRoom);
-    const [playersLeft, setPlayersLeft] = useState(3);
-    const [secretsLeft, setSecretsLeft] = useState(4);
     const [hasSubmittedSecret, setHasSubmittedSecret] = useState(false);
 
-    useEffect(() => {
-        if (room.players) {
-            setPlayersLeft(MAX_PLAYERS - room.players.length);
-        }
-        return () => {};
-    }, [room.players]);
-
-    useEffect(() => {
-        setSecretsLeft(room.players.length - room.secrets.length);
-        return () => {};
-    }, [room.secrets]);
+    const playersLeft = room.maxPlayers - room.players.length;
+    const secretsLeft = room.players.length - room.secrets.length;
 
     useEffect(() => {
         socket.on('waiting-secrets', payload => {
@@ -42,8 +31,6 @@ export const AdminView = () => {
             socket.off('secret-submitted');
         };
     }, []);
-
-    //!TODO:Hacer useEffect onWaitingSecrets status
 
     const onClickReveal = () => {
         socket.emit('reveal-secrets', { code: room.code });
@@ -65,9 +52,9 @@ export const AdminView = () => {
                 {/* Se borra cuando hay jugadores suficientes para empezar */}
 
                 <div className='flex items-center gap-2 mt-5'>
-                    {room.players.length < MAX_PLAYERS ? (
+                    {room.players.length < room.maxPlayers ? (
                         <>
-                            <div>You need {playersLeft} more players to play</div>
+                            <div>Waiting for {playersLeft} more players to play</div>
                             <LoaderCircle className='animate-spin' />
                         </>
                     ) : (
@@ -85,7 +72,7 @@ export const AdminView = () => {
                     Reveal Your Secrets
                 </Button>
 
-                <ul className='w-full max-w-2xl bg-white shadow-md rounded-lg p-4 mb-6'>
+                <ul>
                     {room.players.map(player => (
                         <li key={player.id} className='text-base mb-2 flex items-center gap-2 text-gray-700'>
                             <Cat className='text-indigo-600' />
@@ -102,10 +89,9 @@ export const AdminView = () => {
         <div className='flex flex-col items-center gap-10 justify-center min-h-screen bg-gray-100 text-gray-800 p-8'>
             {hasSubmittedSecret ? (
                 <section className='text-center'>
-                    <div className='text-xl font-semibold my-2 text-indigo-600 animate-pulse'>Waiting for players to reveal their secrets...</div>
-
                     {secretsLeft > 0 ? (
                         <>
+                            <div className='text-xl font-semibold my-2 text-indigo-600 animate-pulse'>Waiting for players to reveal their secrets...</div>
                             <div>{secretsLeft} more player needs to reveal their secret.</div>
                             <div>You submitted your secret.</div>
                         </>
