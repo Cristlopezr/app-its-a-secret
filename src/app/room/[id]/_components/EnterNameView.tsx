@@ -1,4 +1,4 @@
-import { enterNameViewSchema } from '@/app/schemas/schemas';
+import { EnterNameViewSchema } from '@/app/schemas/schemas';
 import { useGameStore } from '@/app/store/store';
 import { Button } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -12,8 +12,8 @@ export const EnterNameView = () => {
     const singlePlayer = useGameStore(state => state.singlePlayer);
     const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
     const room = useGameStore(state => state.room);
-    const form = useForm<z.infer<typeof enterNameViewSchema>>({
-        resolver: zodResolver(enterNameViewSchema),
+    const form = useForm<z.infer<typeof EnterNameViewSchema>>({
+        resolver: zodResolver(EnterNameViewSchema),
         defaultValues: {
             username: '',
         },

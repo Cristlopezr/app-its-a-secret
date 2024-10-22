@@ -25,7 +25,7 @@ export interface Room {
     id: string;
     code: string;
     players: Player[];
-    roomStatus: RoomStatus;
+    status: RoomStatus;
     secrets: Secret[];
     config: Config[];
 }

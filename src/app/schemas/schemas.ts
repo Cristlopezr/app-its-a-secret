@@ -1,9 +1,20 @@
 import { z } from 'zod';
 
-export const joinFormSchema = z.object({
+export const JoinFormSchema = z.object({
     code: z.string().trim().min(8, 'Invalid code').max(8, 'Invalid code'),
 });
 
-export const enterNameViewSchema = z.object({
-    username: z.string().min(1, 'Invalid username'),
+export const EnterNameViewSchema = z.object({
+    username: z.string().min(1, 'Name must be at least 1 character.'),
+});
+
+export const SecretFormSchema = z.object({
+    secret: z
+        .string()
+        .min(10, {
+            message: 'Secret must be at least 10 characters.',
+        })
+        .max(160, {
+            message: 'Secret must not be longer than 160 characters.',
+        }),
 });

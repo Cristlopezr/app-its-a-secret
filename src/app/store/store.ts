@@ -10,7 +10,7 @@ interface GameState {
 
 export const useGameStore = create<GameState>()(set => ({
     singlePlayer: undefined,
-    room: { code: '', id: '', roomStatus: 'waitingPlayers', secrets: [], players: [], config: [] },
+    room: { code: '', id: '', status: 'waitingPlayers', secrets: [], players: [], config: [] },
     setSinglePlayer: player => set(() => ({ singlePlayer: player })),
     setRoom: room => set(() => ({ room })),
 }));

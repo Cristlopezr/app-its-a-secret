@@ -1,4 +1,4 @@
-import { joinFormSchema } from '@/app/schemas/schemas';
+import { JoinFormSchema } from '@/app/schemas/schemas';
 import { Button } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -8,8 +8,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 export const EnterCodeForm = () => {
-    const form = useForm<z.infer<typeof joinFormSchema>>({
-        resolver: zodResolver(joinFormSchema),
+    const form = useForm<z.infer<typeof JoinFormSchema>>({
+        resolver: zodResolver(JoinFormSchema),
         defaultValues: {
             code: '',
         },
