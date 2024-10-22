@@ -4,9 +4,10 @@ export interface Player {
     id: string;
     username: string;
     role: Role;
+    score: number;
 }
 
-export type RoomStatus = 'waiting' | 'started';
+export type RoomStatus = 'waitingPlayers' | 'waitingSecrets' | 'started' | 'finished';
 
 interface Secret {
     id: string;
@@ -14,10 +15,17 @@ interface Secret {
     secret: string;
 }
 
+interface Config {
+    id: string;
+    description: string;
+    isActive: boolean;
+}
+
 export interface Room {
     id: string;
     code: string;
-    roomStatus: RoomStatus;
     players: Player[];
+    roomStatus: RoomStatus;
     secrets: Secret[];
+    config: Config[];
 }

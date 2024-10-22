@@ -1,20 +1,24 @@
+import { joinFormSchema } from '@/app/schemas/schemas';
 import { Button } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { UseFormReturn } from 'react-hook-form';
+import { socket } from '@/lib/socket';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-interface Props {
-    form: UseFormReturn<
-        {
-            code: string;
+export const EnterCodeForm = () => {
+    const form = useForm<z.infer<typeof joinFormSchema>>({
+        resolver: zodResolver(joinFormSchema),
+        defaultValues: {
+            code: '',
         },
-        any,
-        undefined
-    >;
-    onSubmit: (values: { code: string }) => void;
-}
+    });
 
-export const EnterCodeForm = ({ form, onSubmit }: Props) => {
+    const onSubmit = (values: { code: string }) => {
+        socket.emit('enter-code', { code: values.code });
+    };
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>

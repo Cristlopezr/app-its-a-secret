@@ -6,20 +6,16 @@ import { socket } from '@/lib/socket';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export const CreateRoomForm = () => {
+export const CreateRoom = () => {
     const router = useRouter();
     const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
+    const setRoom = useGameStore(state => state.setRoom);
 
     useEffect(() => {
         socket.on('room-created', payload => {
-            setSinglePlayer({
-                id: socket.id!,
-                role: 'Admin',
-                username: '',
-            });
-            sessionStorage.setItem('id', socket.id!);
-            sessionStorage.setItem('code', payload.code);
-            router.push(`/room/${payload.roomId}`);
+            setSinglePlayer(payload.player);
+            setRoom(payload.room);
+            router.push(`/room/${payload.room.id}`);
         });
 
         return () => {

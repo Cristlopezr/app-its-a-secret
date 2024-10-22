@@ -13,6 +13,7 @@ import { joinFormSchema } from '@/app/schemas/schemas';
 export const JoinRoomForm = () => {
     const router = useRouter();
     const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
+    const setRoom = useGameStore(state => state.setRoom);
     const notification = useUiStore(state => state.notification);
     const setNotification = useUiStore(state => state.setNotification);
 
@@ -25,14 +26,9 @@ export const JoinRoomForm = () => {
 
     useEffect(() => {
         socket.on('correct-code', payload => {
-            setSinglePlayer({
-                id: socket.id!,
-                role: 'Player',
-                username: '',
-            });
-            sessionStorage.setItem('id', socket.id!);
-            sessionStorage.setItem('code', payload.code);
-            router.push(`/room/${payload.roomId}`);
+            setSinglePlayer(payload.player);
+            setRoom(payload.room);
+            router.push(`/room/${payload.room.id}`);
         });
 
         socket.on('send-notification', payload => {
@@ -43,15 +39,10 @@ export const JoinRoomForm = () => {
             socket.off('correct-code');
         };
     }, []);
-
-    const onSubmit = (values: { code: string }) => {
-        const { code } = values;
-        socket.emit('enter-code', { code });
-    };
-
     return (
         <div>
-            <EnterCodeForm form={form} onSubmit={onSubmit} />;{notification}
+            {notification}
+            <EnterCodeForm />;
         </div>
     );
 };

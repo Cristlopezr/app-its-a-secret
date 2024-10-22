@@ -1,4 +1,5 @@
 import { enterNameViewSchema } from '@/app/schemas/schemas';
+import { useGameStore } from '@/app/store/store';
 import { Button } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -7,17 +8,25 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-interface Props {
-    onSubmit: (values: { username: string }) => void;
-}
-
-export const EnterNameView = ({ onSubmit }: Props) => {
+export const EnterNameView = () => {
+    const singlePlayer = useGameStore(state => state.singlePlayer);
+    const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
+    const room = useGameStore(state => state.room);
     const form = useForm<z.infer<typeof enterNameViewSchema>>({
         resolver: zodResolver(enterNameViewSchema),
         defaultValues: {
             username: '',
         },
     });
+
+    const onSubmit = (values: { username: string }) => {
+        const { username } = values;
+        socket.emit('join-room', { code: room.code, username });
+        setSinglePlayer({
+            ...singlePlayer!,
+            username,
+        });
+    };
 
     return (
         <Form {...form}>
