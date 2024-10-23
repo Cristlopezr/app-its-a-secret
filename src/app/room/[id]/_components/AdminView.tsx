@@ -5,6 +5,8 @@ import { socket } from '@/lib/socket';
 import { Cat, Check, LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SecretForm } from '../../_components/SecretForm';
+import { PlayersList } from './PlayersList';
+import { GameView } from './GameView';
 
 const MAX_PLAYERS = 1;
 
@@ -26,14 +28,25 @@ export const AdminView = () => {
             setHasSubmittedSecret(true);
         });
 
+        socket.on('game-started', payload => {
+            setRoom(payload.room);
+        });
+
         return () => {
             socket.off('waiting-secrets');
             socket.off('secret-submitted');
+            socket.off('game-started');
         };
     }, []);
 
     const onClickReveal = () => {
         socket.emit('reveal-secrets', { code: room.code });
+    };
+
+    const onStartGame = () => {
+        //empezar countdown
+        socket.emit('game-starts', { code: room.code });
+        //mostrar el mensaje de que si vota por su mismo secreto no cuenta ni descuenta
     };
 
     if (room.status === 'waitingPlayers') {
@@ -72,57 +85,54 @@ export const AdminView = () => {
                     Reveal Your Secrets
                 </Button>
 
-                <ul>
-                    {room.players.map(player => (
-                        <li key={player.id} className='text-base mb-2 flex items-center gap-2 text-gray-700'>
-                            <Cat className='text-indigo-600' />
-                            {player.username}
-                        </li>
-                    ))}
-                </ul>
+                <PlayersList />
             </div>
         );
     }
 
     //waitingSecrets status
-    return (
-        <div className='flex flex-col items-center gap-10 justify-center min-h-screen bg-gray-100 text-gray-800 p-8'>
-            {hasSubmittedSecret ? (
-                <section className='text-center'>
-                    {secretsLeft > 0 ? (
-                        <>
-                            <div className='text-xl font-semibold my-2 text-indigo-600 animate-pulse'>Waiting for players to reveal their secrets...</div>
-                            <div>{secretsLeft} more player needs to reveal their secret.</div>
-                            <div>You submitted your secret.</div>
-                        </>
-                    ) : (
-                        <>
-                            <div>Ready to play.</div>
-                        </>
-                    )}
-                </section>
-            ) : (
-                <section className='text-center'>
-                    <div className='text-xl font-semibold my-2 text-indigo-600 animate-pulse'>Waiting for players to reveal their secrets...</div>
-                    <div>{secretsLeft} more player needs to reveal their secret.</div>
-                    <SecretForm />
-                </section>
-            )}
+    if (room.status === 'waitingSecrets') {
+        return (
+            <div className='flex flex-col items-center gap-10 justify-center min-h-screen bg-gray-100 text-gray-800 p-8'>
+                {hasSubmittedSecret ? (
+                    <section className='text-center'>
+                        {secretsLeft > 0 ? (
+                            <>
+                                <div className='text-xl font-semibold my-2 text-indigo-600 animate-pulse'>Waiting for players to reveal their secrets...</div>
+                                <div>{secretsLeft} more player needs to reveal their secret.</div>
+                                <div>You submitted your secret.</div>
+                            </>
+                        ) : (
+                            <>
+                                <div>Ready to play.</div>
+                            </>
+                        )}
+                    </section>
+                ) : (
+                    <section className='text-center'>
+                        <div className='text-xl font-semibold my-2 text-indigo-600 animate-pulse'>Waiting for players to reveal their secrets...</div>
+                        <div>{secretsLeft} more player needs to reveal their secret.</div>
+                        <SecretForm />
+                    </section>
+                )}
 
-            {/* Hacer que el icono sea random */}
-            <ul className='w-full max-w-2xl bg-white shadow-md rounded-lg p-4 mb-6'>
-                {room.players.map(player => (
-                    <li key={player.id} className='text-base mb-2 flex items-center gap-2 text-gray-700'>
-                        <Cat className='text-indigo-600' />
-                        {player.username}
-                    </li>
-                ))}
-            </ul>
+                {/* Hacer que el icono sea random */}
+                <PlayersList />
 
-            {/* Esto deberia verse cuando el roomStatus sea waitingSecrets y deberia estar deshabilitado si los secretos no esta completos */}
-            <Button disabled={room.secrets.length !== room.players.length} className='bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded text-xl transition-all duration-200'>
-                Start Game
-            </Button>
-        </div>
-    );
+                {/* Esto deberia verse cuando el roomStatus sea waitingSecrets y deberia estar deshabilitado si los secretos no esta completos */}
+                <Button
+                    onClick={onStartGame}
+                    disabled={room.secrets.length !== room.players.length}
+                    className='bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded text-xl transition-all duration-200'
+                >
+                    Start Game
+                </Button>
+            </div>
+        );
+    }
+
+    if (room.status === 'started') {
+        return <GameView></GameView>;
+    }
+    return <div>Game finished.</div>;
 };

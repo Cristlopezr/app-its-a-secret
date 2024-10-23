@@ -2,7 +2,7 @@
 
 import { socket } from '@/lib/socket';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { EnterCodeForm } from './EnterCodeForm';
 import { useGameStore, useUiStore } from '@/app/store/store';
 
