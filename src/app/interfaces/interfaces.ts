@@ -29,4 +29,5 @@ export interface Room {
     secrets: Secret[];
     config: Config[];
     maxPlayers: number;
+    currentSecretIdx: number;
 }

@@ -4,16 +4,18 @@ import { useEffect, useState } from 'react';
 
 export const GameView = () => {
     const room = useGameStore(state => state.room);
+    const singlePlayer = useGameStore(state => state.singlePlayer);
     const setRoom = useGameStore(state => state.setRoom);
 
-    const [timeToGuess, setTimeGuess] = useState(15);
+    const [timeToGuess, setTimeToGuess] = useState(15);
     const [timeToStartGame, setTimeToStartGame] = useState(5);
-    const [currentSecret, setCurrentSecret] = useState(room.secrets[0]);
-    const [currentSecretIdx, setCurrentSecretIdx] = useState(0);
+    const [isTimeUp, setIsTimeUp] = useState(false);
+    const [infoText, setInfoText] = useState('Round starts in');
 
     useEffect(() => {
         socket.on('game-started', payload => {
             setRoom(payload.room);
+            setIsTimeUp(false);
         });
 
         socket.on('delay-timer-update', payload => {
@@ -21,32 +23,57 @@ export const GameView = () => {
         });
 
         socket.on('timer-update', payload => {
-            setTimeGuess(payload.time);
+            setTimeToGuess(payload.time);
         });
 
-        //Reiniciar todo en timer-ended
-        socket.on('timer-ended', payload => {
-            setTimeGuess(15);
-            setCurrentSecret(room.secrets[currentSecretIdx + 1]);
-            setCurrentSecretIdx(currentSecretIdx + 1);
+        socket.on('time-is-up', payload => {
+            console.log('time is up');
+            setRoom(payload.room);
+            setIsTimeUp(true);
         });
+
+        socket.on('timer-ended', () => {
+            setIsTimeUp(false);
+            setTimeToGuess(15);
+            setInfoText('New round starts in');
+            setTimeToStartGame(5);
+            if (singlePlayer?.role === 'Admin') {
+                socket.emit('new-round', { code: room.code });
+            }
+        });
+
+        return () => {
+            socket.off('game-started');
+            socket.off('delay-timer-update');
+            socket.off('timer-update');
+            socket.off('timer-ended');
+            socket.off('time-is-up');
+        };
     }, []);
+
+    if (room.currentSecretIdx === room.secrets.length) {
+        return <div>Game ended</div>;
+    }
+
+    if (isTimeUp) {
+        return <div>Time is Up</div>;
+    }
 
     if (timeToStartGame !== 0) {
         return (
             <div>
-                <div>New round starting in: {timeToStartGame}</div>
+                <div>
+                    {infoText}: {timeToStartGame}
+                </div>
             </div>
         );
     }
 
-    if (timeToGuess === 0 && currentSecretIdx !== room.secrets.length - 1) {
-        socket.emit('new-round', { code: room.code });
-    }
-
     return (
         <div>
-            <div>{currentSecret.secret}</div>
+            <div>{room.secrets[room.currentSecretIdx].secret}</div>
+            <div>{room.secrets[room.currentSecretIdx].playerId}</div>
+            <div>{room.secrets[room.currentSecretIdx].id}</div>
             <div>{timeToGuess}</div>
         </div>
     );
