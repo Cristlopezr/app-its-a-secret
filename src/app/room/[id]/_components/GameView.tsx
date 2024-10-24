@@ -27,7 +27,7 @@ export const GameView = () => {
         });
 
         socket.on('time-is-up', payload => {
-            console.log('time is up');
+            console.log({ currentIdx: payload.room.currentSecretIdx, length: payload.room.secrets.length });
             setRoom(payload.room);
             setIsTimeUp(true);
         });
@@ -50,10 +50,6 @@ export const GameView = () => {
             socket.off('time-is-up');
         };
     }, []);
-
-    if (room.currentSecretIdx === room.secrets.length) {
-        return <div>Game ended</div>;
-    }
 
     if (isTimeUp) {
         return <div>Time is Up</div>;

@@ -31,7 +31,7 @@ export const JoinRoomForm = () => {
     return (
         <div>
             {notification}
-            <EnterCodeForm />;
+            <EnterCodeForm />
         </div>
     );
 };

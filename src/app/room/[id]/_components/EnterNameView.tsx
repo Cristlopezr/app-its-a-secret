@@ -44,7 +44,7 @@ export const EnterNameView = () => {
                         </FormItem>
                     )}
                 />
-                <Button type='submit'>Create room</Button>
+                <Button type='submit'>{singlePlayer?.role === 'Admin' ? 'Create room' : 'Join room'}</Button>
             </form>
         </Form>
     );

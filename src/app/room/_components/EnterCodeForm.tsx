@@ -35,7 +35,9 @@ export const EnterCodeForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type='submit'>Join room</Button>
+                <Button className='w-full' type='submit'>
+                    Join room
+                </Button>
             </form>
         </Form>
     );

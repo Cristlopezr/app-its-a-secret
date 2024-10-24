@@ -27,5 +27,9 @@ export const CreateRoom = () => {
         socket.emit('create-room');
     };
 
-    return <Button onClick={onCreateRoom}>Create room</Button>;
+    return (
+        <Button className='w-full' onClick={onCreateRoom}>
+            Create room
+        </Button>
+    );
 };
