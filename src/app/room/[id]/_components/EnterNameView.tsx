@@ -29,23 +29,27 @@ export const EnterNameView = () => {
     };
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-                <FormField
-                    control={form.control}
-                    name='username'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Username</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type='submit'>{singlePlayer?.role === 'Admin' ? 'Create room' : 'Join room'}</Button>
-            </form>
-        </Form>
+        <div className='flex justify-center pt-40 text-center'>
+            <div className='min-w-96 space-y-8'>
+                <h1>Enter your username</h1>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+                        <FormField
+                            control={form.control}
+                            name='username'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input placeholder='username' {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button type='submit'>{singlePlayer?.role === 'Admin' ? 'Create room' : 'Join room'}</Button>
+                    </form>
+                </Form>
+            </div>
+        </div>
     );
 };

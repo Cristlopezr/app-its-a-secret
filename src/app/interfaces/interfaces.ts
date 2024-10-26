@@ -5,6 +5,8 @@ export interface Player {
     username: string;
     role: Role;
     score: number;
+    color: string;
+    icon: string;
 }
 
 export type RoomStatus = 'waitingPlayers' | 'waitingSecrets' | 'started' | 'finished';

@@ -27,17 +27,14 @@ export const EnterCodeForm = () => {
                     name='code'
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>8 digit code</FormLabel>
                             <FormControl>
-                                <Input {...field} />
+                                <Input placeholder='8 digit code' {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button className='w-full' type='submit'>
-                    Join room
-                </Button>
+                <Button className='w-full' type='submit'>Join room</Button>
             </form>
         </Form>
     );

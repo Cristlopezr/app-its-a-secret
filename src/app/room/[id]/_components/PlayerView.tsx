@@ -1,10 +1,10 @@
 import { useGameStore } from '@/app/store/store';
-import { Cat, Check, LoaderCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Check } from 'lucide-react';
+import { useEffect } from 'react';
 import { SecretForm } from '../../_components/SecretForm';
-import { Button } from '@/components/ui';
 import { socket } from '@/lib/socket';
 import { GameView } from './GameView';
+import { PlayersList } from './PlayersList';
 
 export const PlayerView = () => {
     const room = useGameStore(state => state.room);
@@ -39,23 +39,15 @@ export const PlayerView = () => {
     if (room.status === 'waitingPlayers') {
         return (
             <div className='flex flex-col items-center gap-10 justify-center min-h-screen bg-gray-100 text-gray-800 p-8'>
-                <ul>
-                    {room.players.map(player => (
-                        <li key={player.id} className='text-base mb-2 flex items-center gap-2 text-gray-700'>
-                            <Cat className='text-indigo-600' />
-                            {player.username}
-                        </li>
-                    ))}
-                </ul>
+                <PlayersList />
                 <div className='flex items-center gap-2 mt-5'>
                     {room.players.length < room.maxPlayers ? (
-                        <>
-                            <div>Waiting for {playersLeft} more players to play</div>
-                            <LoaderCircle className='animate-spin' />
-                        </>
+                        <div className='animate-pulse text-lg flex items-center gap-2'>
+                            <div>Waiting for {playersLeft} more players to join...</div>
+                        </div>
                     ) : (
                         <>
-                            <div>You are ready to play.</div>
+                            <div>Ready to play.</div>
                             <Check />
                         </>
                     )}
@@ -89,15 +81,7 @@ export const PlayerView = () => {
                     </section>
                 )}
 
-                {/* Hacer que el icono sea random */}
-                <ul>
-                    {room.players.map(player => (
-                        <li key={player.id} className='text-base mb-2 flex items-center gap-2 text-gray-700'>
-                            <Cat className='text-indigo-600' />
-                            {player.username}
-                        </li>
-                    ))}
-                </ul>
+                <PlayersList />
             </div>
         );
     }

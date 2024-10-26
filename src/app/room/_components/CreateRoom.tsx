@@ -28,8 +28,11 @@ export const CreateRoom = () => {
     };
 
     return (
-        <Button className='w-full' onClick={onCreateRoom}>
-            Create room
-        </Button>
+        <div>
+            <p className='mb-2'>Create a Room</p>
+            <Button className='w-full' onClick={onCreateRoom}>
+                Create room
+            </Button>
+        </div>
     );
 };

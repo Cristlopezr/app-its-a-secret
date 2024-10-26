@@ -2,13 +2,11 @@ import { useGameStore } from '@/app/store/store';
 import { Button } from '@/components/ui';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { socket } from '@/lib/socket';
-import { Cat, Check, LoaderCircle } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SecretForm } from '../../_components/SecretForm';
 import { PlayersList } from './PlayersList';
 import { GameView } from './GameView';
-
-const MAX_PLAYERS = 1;
 
 export const AdminView = () => {
     const room = useGameStore(state => state.room);
@@ -51,11 +49,11 @@ export const AdminView = () => {
 
     if (room.status === 'waitingPlayers') {
         return (
-            <div className='flex flex-col items-center gap-10 justify-center min-h-screen bg-gray-100 text-gray-800 p-8'>
-                <h1 className='text-4xl font-bold mb-8 text-indigo-700'>It's a Secret!</h1>
-                <Card className='bg-white shadow-md w-full max-w-2xl'>
+            <div className='flex flex-col items-center gap-10 min-h-screen pt-20'>
+                <h1 className='text-4xl font-bold mb-8'>It's a Secret!</h1>
+                <Card className='w-full max-w-2xl'>
                     <CardHeader>
-                        <CardTitle className='text-2xl text-indigo-600'>Room Code: {room.code}</CardTitle>
+                        <CardTitle className='text-2xl'>Room Code: {room.code}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className='text-base mb-2'>Invite at least 3 friends to join the fun! Share this room code with them.</p>
@@ -66,10 +64,9 @@ export const AdminView = () => {
 
                 <div className='flex items-center gap-2 mt-5'>
                     {room.players.length < room.maxPlayers ? (
-                        <>
-                            <div>Waiting for {playersLeft} more players to play</div>
-                            <LoaderCircle className='animate-spin' />
-                        </>
+                        <div className='animate-pulse text-lg flex items-center gap-2'>
+                            <div>Waiting for {playersLeft} more players to join...</div>
+                        </div>
                     ) : (
                         <>
                             <div>You are ready to play</div>
@@ -77,11 +74,7 @@ export const AdminView = () => {
                         </>
                     )}
                 </div>
-                <Button
-                    onClick={onClickReveal}
-                    disabled={room.players.length < MAX_PLAYERS}
-                    className='bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded text-lg my-6 transition-all duration-200'
-                >
+                <Button onClick={onClickReveal} disabled={room.players.length < 1} className='font-semibold py-2 px-6 rounded text-lg my-6 transition-all duration-200'>
                     Reveal Your Secrets
                 </Button>
 
@@ -93,12 +86,12 @@ export const AdminView = () => {
     //waitingSecrets status
     if (room.status === 'waitingSecrets') {
         return (
-            <div className='flex flex-col items-center gap-10 justify-center min-h-screen bg-gray-100 text-gray-800 p-8'>
+            <div className='flex flex-col items-center gap-10 justify-center min-h-screen p-8'>
                 {hasSubmittedSecret ? (
                     <section className='text-center'>
                         {secretsLeft > 0 ? (
                             <>
-                                <div className='text-xl font-semibold my-2 text-indigo-600 animate-pulse'>Waiting for players to reveal their secrets...</div>
+                                <div className='text-xl font-semibold my-2 animate-pulse'>Waiting for players to reveal their secrets...</div>
                                 <div>{secretsLeft} more player needs to reveal their secret.</div>
                                 <div>You submitted your secret.</div>
                             </>
@@ -110,7 +103,7 @@ export const AdminView = () => {
                     </section>
                 ) : (
                     <section className='text-center'>
-                        <div className='text-xl font-semibold my-2 text-indigo-600 animate-pulse'>Waiting for players to reveal their secrets...</div>
+                        <div className='text-xl font-semibold my-2 animate-pulse'>Waiting for players to reveal their secrets...</div>
                         <div>{secretsLeft} more player needs to reveal their secret.</div>
                         <SecretForm />
                     </section>
@@ -123,7 +116,7 @@ export const AdminView = () => {
                 <Button
                     onClick={onStartGame}
                     disabled={room.secrets.length !== room.players.length}
-                    className='bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded text-xl transition-all duration-200'
+                    className='font-semibold py-3 px-8 rounded text-xl transition-all duration-200'
                 >
                     Start Game
                 </Button>
@@ -132,7 +125,7 @@ export const AdminView = () => {
     }
 
     if (room.status === 'started') {
-        return <GameView></GameView>;
+        return <GameView />;
     }
     return <div>Game finished.</div>;
 };
