@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { EnterCodeForm } from './EnterCodeForm';
 import { useGameStore, useUiStore } from '@/app/store/store';
 
-export const JoinRoomForm = () => {
+export const JoinRoom = () => {
     const router = useRouter();
     const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
     const setRoom = useGameStore(state => state.setRoom);

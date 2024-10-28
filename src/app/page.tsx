@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { CreateRoom } from './room/_components/CreateRoom';
-import { JoinRoomForm } from './room/_components/JoinRoomForm';
+import { JoinRoom } from './room/_components/JoinRoom';
 
 export default function Home() {
     return (
@@ -10,7 +10,7 @@ export default function Home() {
 
                 <h2 className='text-center text-3xl'>Gather your friends and get ready for a fun game of secrets and guesses!</h2>
                 <p className='text-2xl text-center my-10'>Ready to play? Create a room or join with a code, and let the fun begin!</p>
-                <div className='grid sm:grid-cols-2 grid-flow-col justify-between'>
+                <div className='grid grid-cols-1 md:grid-cols-2 justify-between'>
                     <section className=''>
                         <Card className='p-5'>
                             <CardContent>
@@ -35,7 +35,7 @@ export default function Home() {
                             </CardContent>
                         </Card>
                     </section>
-                    <section className='text-center p-10 max-w-xl self-center mx-auto w-full'>
+                    <section className='text-center p-10 max-w-xl self-center mx-auto w-full row-start-1 md:col-start-2'>
                         <div className='mb-5'>
                             <CreateRoom />
                         </div>
@@ -48,7 +48,7 @@ export default function Home() {
                             </div>
                         </div>
                         <div className='text-center'>
-                            <JoinRoomForm />
+                            <JoinRoom />
                         </div>
                     </section>
                 </div>

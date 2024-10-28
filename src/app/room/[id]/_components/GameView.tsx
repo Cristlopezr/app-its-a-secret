@@ -10,7 +10,7 @@ export const GameView = () => {
 
     const [timeToGuess, setTimeToGuess] = useState(15);
     const [timeToStartGame, setTimeToStartGame] = useState(5);
-    const [isTimeUp, setIsTimeUp] = useState(true);
+    const [isTimeUp, setIsTimeUp] = useState(false);
     const [infoText, setInfoText] = useState('Round starts in');
     const [hasVoted, setHasVoted] = useState(false);
 
@@ -20,7 +20,7 @@ export const GameView = () => {
             setIsTimeUp(false);
         });
 
-        /*  socket.on('delay-timer-update', payload => {
+        socket.on('delay-timer-update', payload => {
             setTimeToStartGame(payload.time);
         });
 
@@ -43,7 +43,7 @@ export const GameView = () => {
             if (singlePlayer?.role === 'Admin') {
                 socket.emit('new-round', { code: room.code });
             }
-        }); */
+        });
 
         return () => {
             socket.off('game-started');

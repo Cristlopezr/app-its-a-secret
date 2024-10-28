@@ -1,6 +1,6 @@
 import { JoinFormSchema } from '@/app/schemas/schemas';
 import { Button } from '@/components/ui';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { socket } from '@/lib/socket';
 import { zodResolver } from '@hookform/resolvers/zod';
