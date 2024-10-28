@@ -5,12 +5,13 @@ export const JoinFormSchema = z.object({
 });
 
 export const EnterNameViewSchema = z.object({
-    username: z.string().min(1, 'Name must be at least 1 character.'),
+    username: z.string().trim().min(1, 'Username must be at least 1 character.'),
 });
 
 export const SecretFormSchema = z.object({
     secret: z
         .string()
+        .trim()
         .min(10, {
             message: 'Secret must be at least 10 characters.',
         })

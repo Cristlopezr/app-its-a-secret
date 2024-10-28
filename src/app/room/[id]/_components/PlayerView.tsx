@@ -1,17 +1,15 @@
 import { useGameStore } from '@/app/store/store';
-import { Check } from 'lucide-react';
 import { useEffect } from 'react';
-import { SecretForm } from './SecretForm';
 import { socket } from '@/lib/socket';
 import { GameView } from './GameView';
-import { PlayersList } from './PlayersList';
 import { WaitingPlayers } from './player/WaitingPlayers';
-import { WaitingSecrets } from './player/WaitingSecrets';
+import { WaitingSecrets } from './WaitingSecrets';
 
 export const PlayerView = () => {
     const room = useGameStore(state => state.room);
     const singlePlayer = useGameStore(state => state.singlePlayer);
     const setRoom = useGameStore(state => state.setRoom);
+    const hasSubmittedSecret = room.secrets.find(({ playerId }) => playerId === singlePlayer?.id);
 
     useEffect(() => {
         socket.on('waiting-secrets', payload => {
@@ -39,7 +37,7 @@ export const PlayerView = () => {
     }
 
     if (room.status === 'waitingSecrets') {
-        return <WaitingSecrets />;
+        return <WaitingSecrets hasSubmittedSecret={!!hasSubmittedSecret} />;
     }
 
     if (room.status === 'started') {

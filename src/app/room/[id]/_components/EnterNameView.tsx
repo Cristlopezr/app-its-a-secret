@@ -40,7 +40,7 @@ export const EnterNameView = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
-                                        <Input placeholder='username' {...field} />
+                                        <Input placeholder='Username' {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

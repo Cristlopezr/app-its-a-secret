@@ -1,8 +1,8 @@
 import { useGameStore } from '@/app/store/store';
-import { SecretForm } from '../SecretForm';
-import { PlayersList } from '../PlayersList';
 import { Button } from '@/components/ui';
 import { socket } from '@/lib/socket';
+import { SecretForm } from './SecretForm';
+import { PlayersList } from './PlayersList';
 
 interface Props {
     hasSubmittedSecret: boolean;
@@ -10,6 +10,7 @@ interface Props {
 
 export const WaitingSecrets = ({ hasSubmittedSecret }: Props) => {
     const room = useGameStore(state => state.room);
+    const singlePlayer = useGameStore(state => state.singlePlayer);
     const secretsLeft = room.players.length - room.secrets.length;
 
     const onStartGame = () => {
@@ -35,9 +36,9 @@ export const WaitingSecrets = ({ hasSubmittedSecret }: Props) => {
                 </section>
             ) : (
                 <section className='text-center'>
-                    <div className='text-xl font-semibold mb-5'>Don't forget to hide your screen.</div>
                     <div className='text-xl font-semibold my-2 animate-pulse'>Waiting for players to reveal their secrets...</div>
                     <div className='my-2'>{secretsLeft} more player needs to reveal their secret.</div>
+                    <div className='text-xl font-semibold my-5'>Don't forget to hide your screen.</div>
                     <SecretForm />
                 </section>
             )}
@@ -45,10 +46,11 @@ export const WaitingSecrets = ({ hasSubmittedSecret }: Props) => {
             {/* Hacer que el icono sea random */}
             <PlayersList />
 
-            {/* Esto deberia verse cuando el roomStatus sea waitingSecrets y deberia estar deshabilitado si los secretos no esta completos */}
-            <Button onClick={onStartGame} disabled={room.secrets.length !== room.players.length} className='font-semibold py-3 px-8 rounded text-xl transition-all duration-200'>
-                Start Game
-            </Button>
+            {singlePlayer?.role === 'Admin' && (
+                <Button onClick={onStartGame} disabled={room.secrets.length !== room.players.length} className='font-semibold py-3 px-8 rounded text-xl transition-all duration-200'>
+                    Start Game
+                </Button>
+            )}
         </div>
     );
 };

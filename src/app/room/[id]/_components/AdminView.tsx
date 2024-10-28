@@ -1,14 +1,15 @@
 import { useGameStore } from '@/app/store/store';
 import { socket } from '@/lib/socket';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { GameView } from './GameView';
 import { WaitingPlayers } from './admin/WaitingPlayers';
-import { WaitingSecrets } from './admin/WaitingSecrets';
+import { WaitingSecrets } from './WaitingSecrets';
 
 export const AdminView = () => {
     const room = useGameStore(state => state.room);
     const setRoom = useGameStore(state => state.setRoom);
-    const [hasSubmittedSecret, setHasSubmittedSecret] = useState(false);
+    const singlePlayer = useGameStore(state => state.singlePlayer);
+    const hasSubmittedSecret = room.secrets.find(({ playerId }) => playerId === singlePlayer?.id);
 
     useEffect(() => {
         socket.on('waiting-secrets', payload => {
@@ -17,7 +18,6 @@ export const AdminView = () => {
 
         socket.on('secret-submitted', payload => {
             setRoom(payload.room);
-            setHasSubmittedSecret(true);
         });
 
         socket.on('game-started', payload => {
@@ -37,7 +37,7 @@ export const AdminView = () => {
 
     //waitingSecrets status
     if (room.status === 'waitingSecrets') {
-        return <WaitingSecrets hasSubmittedSecret={hasSubmittedSecret} />;
+        return <WaitingSecrets hasSubmittedSecret={!!hasSubmittedSecret} />;
     }
 
     if (room.status === 'started') {

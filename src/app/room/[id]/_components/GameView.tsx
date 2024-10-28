@@ -1,4 +1,5 @@
 import { useGameStore } from '@/app/store/store';
+import { Button } from '@/components/ui';
 import { ColorName, colorVariants } from '@/lib/constants';
 import { socket } from '@/lib/socket';
 import { useEffect, useState } from 'react';
@@ -12,7 +13,7 @@ export const GameView = () => {
     const [timeToStartGame, setTimeToStartGame] = useState(5);
     const [isTimeUp, setIsTimeUp] = useState(false);
     const [infoText, setInfoText] = useState('Round starts in');
-    const [hasVoted, setHasVoted] = useState(false);
+    const [selectedId, setSelectedId] = useState<string | null>(null);
 
     useEffect(() => {
         socket.on('game-started', payload => {
@@ -37,7 +38,7 @@ export const GameView = () => {
         socket.on('timer-ended', () => {
             setIsTimeUp(false);
             setTimeToGuess(15);
-            setHasVoted(false);
+            setSelectedId(null);
             setInfoText('New round starts in');
             setTimeToStartGame(5);
             if (singlePlayer?.role === 'Admin') {
@@ -68,7 +69,7 @@ export const GameView = () => {
 
     const onVote = (selectedId: string) => {
         console.log('Click');
-        setHasVoted(true);
+        setSelectedId(selectedId);
         console.log(selectedId === room.secrets[room.currentSecretIdx].playerId);
         //comparar si el id seleccionado es igual al id del secreto que se esta mostrando
         //guardar los puntos en el jugador que esta jugando, sumar mas si es que contesto antes, si no le achunta no hacer nada
@@ -80,33 +81,30 @@ export const GameView = () => {
             <div className='text-4xl py-10'>{room.secrets[room.currentSecretIdx].secret}</div>
             <div className='font-semibold text-3xl'>{timeToGuess}</div>
             <div className='font-semibold text-3xl mt-10 mb-5'>Who wrote it?</div>
+            {selectedId && <div className='text-lg'>Your answer's in! But who knows if you’re onto something?</div>}
             <div className='grid grid-cols-2 py-10 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5 place-items-center'>
-                {room.players.map(({ id, username, color }) =>
-                    hasVoted ? (
-                        <button
-                            disabled={hasVoted}
-                            style={{ backgroundColor: color }}
-                            onClick={() => onVote(id)}
-                            className='opacity-70 rounded-md w-full min-h-[150px] transition-opacity duration-300 md:h-[250px] flex items-center justify-center font-semibold text-xl cursor-pointer'
+                {room.players.map(({ id, username, color }) => {
+                    console.log(color);
+                    return (
+                        <div
                             key={id}
+                            className={`${
+                                selectedId ? 'rounded-md w-full min-h-[150px] md:h-[250px] p-[2px]' : 'hover:border-2 hover:border-violet-500 rounded-md w-full min-h-[150px] md:h-[250px] p-[2px]'
+                            }`}
                         >
-                            {username}
-                        </button>
-                    ) : (
-                        <button
-                            disabled={hasVoted}
-                            style={{ backgroundColor: color }}
-                            onClick={() => onVote(id)}
-                            className='hover:opacity-70 rounded-md w-full min-h-[150px] transition-opacity duration-300 md:h-[250px] flex items-center justify-center font-semibold text-xl cursor-pointer'
-                            key={id}
-                        >
-                            {username}
-                        </button>
-                    )
-                )}
+                            <Button
+                                disabled={!!selectedId}
+                                onClick={() => onVote(id)}
+                                className={`flex items-center h-full w-full justify-center font-semibold text-xl cursor-pointer ${colorVariants[color as ColorName]} ${
+                                    selectedId && id !== selectedId ? 'disabled:opacity-50' : 'disabled:opacity-100'
+                                }`}
+                            >
+                                {username}
+                            </Button>
+                        </div>
+                    );
+                })}
             </div>
-            {/*    <div>{room.secrets[room.currentSecretIdx].playerId}</div>
-            <div>{room.secrets[room.currentSecretIdx].id}</div> */}
         </div>
     );
 };
