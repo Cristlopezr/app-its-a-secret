@@ -6,9 +6,14 @@ const config: Config = {
     content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
     theme: {
         extend: {
-            fontFamily: {
-                sans: ['var(--font-geist-sans)',...fontFamily.sans],
-                mono: ['var(--font-geist-mono)',...fontFamily.mono],
+            keyframes: {
+                'caret-blink': {
+                    '0%,70%,100%': { opacity: '1' },
+                    '20%,50%': { opacity: '0' },
+                },
+            },
+            animation: {
+                'caret-blink': 'caret-blink 1.25s ease-out infinite',
             },
             colors: {
                 background: 'hsl(var(--background))',
