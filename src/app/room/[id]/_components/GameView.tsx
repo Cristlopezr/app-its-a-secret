@@ -25,7 +25,7 @@ export const GameView = () => {
             setTimeToStartGame(payload.time);
         });
 
-        socket.on('timer-update', payload => {
+            socket.on('timer-update', payload => {
             setTimeToGuess(payload.time);
         });
 
@@ -81,29 +81,27 @@ export const GameView = () => {
             <div className='text-4xl py-10'>{room.secrets[room.currentSecretIdx].secret}</div>
             <div className='font-semibold text-3xl'>{timeToGuess}</div>
             <div className='font-semibold text-3xl mt-10 mb-5'>Who wrote it?</div>
-            {selectedId && <div className='text-lg'>Your answer's in! But who knows if you’re onto something?</div>}
+            {/* Hacer que el mensaje sea random */}
+            <div className={`text-lg ${selectedId ? 'opacity-100' : 'opacity-0'}`}>Your answer's in! But who knows if you’re onto something?</div>
             <div className='grid grid-cols-2 py-10 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5 place-items-center'>
-                {room.players.map(({ id, username, color }) => {
-                    console.log(color);
-                    return (
-                        <div
-                            key={id}
-                            className={`${
-                                selectedId ? 'rounded-md w-full min-h-[150px] md:h-[250px] p-[2px]' : 'hover:border-2 hover:border-violet-500 rounded-md w-full min-h-[150px] md:h-[250px] p-[2px]'
+                {room.players.map(({ id, username, color }) => (
+                    <div
+                        key={id}
+                        className={`${
+                            selectedId ? 'rounded-md w-full min-h-[150px] md:h-[250px] p-[2px]' : 'hover:border-2 hover:border-violet-500 rounded-md w-full min-h-[150px] md:h-[250px] p-[2px]'
+                        }`}
+                    >
+                        <Button
+                            disabled={!!selectedId}
+                            onClick={() => onVote(id)}
+                            className={`flex items-center h-full w-full justify-center font-semibold text-xl cursor-pointer ${colorVariants[color as ColorName].bg} ${
+                                selectedId && id !== selectedId ? 'disabled:opacity-50' : 'disabled:opacity-100'
                             }`}
                         >
-                            <Button
-                                disabled={!!selectedId}
-                                onClick={() => onVote(id)}
-                                className={`flex items-center h-full w-full justify-center font-semibold text-xl cursor-pointer ${colorVariants[color as ColorName]} ${
-                                    selectedId && id !== selectedId ? 'disabled:opacity-50' : 'disabled:opacity-100'
-                                }`}
-                            >
-                                {username}
-                            </Button>
-                        </div>
-                    );
-                })}
+                            {username}
+                        </Button>
+                    </div>
+                ))}
             </div>
         </div>
     );
