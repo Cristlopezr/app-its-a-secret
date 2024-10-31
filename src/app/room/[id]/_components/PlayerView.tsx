@@ -4,6 +4,7 @@ import { socket } from '@/lib/socket';
 import { GameView } from './GameView';
 import { WaitingPlayers } from './player/WaitingPlayers';
 import { WaitingSecrets } from './WaitingSecrets';
+import { GameFinished } from './GameFinished';
 
 export const PlayerView = () => {
     const room = useGameStore(state => state.room);
@@ -43,5 +44,5 @@ export const PlayerView = () => {
     if (room.status === 'started') {
         return <GameView />;
     }
-    return <div className='text-6xl flex items-center justify-center min-h-screen'>Game finished.</div>;
+    return <GameFinished />;
 };

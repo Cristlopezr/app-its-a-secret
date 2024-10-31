@@ -25,12 +25,11 @@ export const GameView = () => {
             setTimeToStartGame(payload.time);
         });
 
-            socket.on('timer-update', payload => {
+        socket.on('timer-update', payload => {
             setTimeToGuess(payload.time);
         });
 
         socket.on('time-is-up', payload => {
-            console.log({ currentIdx: payload.room.currentSecretIdx, length: payload.room.secrets.length });
             setRoom(payload.room);
             setIsTimeUp(true);
         });
@@ -68,12 +67,12 @@ export const GameView = () => {
     }
 
     const onVote = (selectedId: string) => {
-        console.log('Click');
         setSelectedId(selectedId);
-        console.log(selectedId === room.secrets[room.currentSecretIdx].playerId);
-        //comparar si el id seleccionado es igual al id del secreto que se esta mostrando
-        //guardar los puntos en el jugador que esta jugando, sumar mas si es que contesto antes, si no le achunta no hacer nada
-        console.log({ selectedId, secretPlayerId: room.secrets[room.currentSecretIdx].playerId, playerPlaying: singlePlayer?.id });
+        if (selectedId === singlePlayer?.id) return;
+
+        if (selectedId === room.secrets[room.currentSecretIdx].playerId) {
+            socket.emit('user-voted', { endTime: Date.now(), code: room.code });
+        }
     };
 
     return (

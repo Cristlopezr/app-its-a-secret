@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { GameView } from './GameView';
 import { WaitingPlayers } from './admin/WaitingPlayers';
 import { WaitingSecrets } from './WaitingSecrets';
+import { GameFinished } from './GameFinished';
 
 export const AdminView = () => {
     const room = useGameStore(state => state.room);
@@ -44,5 +45,5 @@ export const AdminView = () => {
         return <GameView />;
     }
     /* Mostrar los ganadores */
-    return <div className='text-6xl flex items-center justify-center min-h-screen'>Game finished.</div>;
+    return <GameFinished />;
 };
