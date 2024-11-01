@@ -18,7 +18,7 @@ export const WaitingPlayers = () => {
     return (
         <div className='flex flex-col items-center gap-10 min-h-screen pt-20'>
             <h1 className='text-4xl font-bold mb-8'>It's a Secret!</h1>
-            <Card className='w-full max-w-2xl'>
+            <Card className='w-full max-w-2xl bg-background'>
                 <CardHeader>
                     <CardTitle className='text-2xl'>Room Code: {room.code}</CardTitle>
                 </CardHeader>

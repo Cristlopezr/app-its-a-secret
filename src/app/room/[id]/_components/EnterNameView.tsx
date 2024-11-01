@@ -1,5 +1,5 @@
 import { EnterNameViewSchema } from '@/app/schemas/schemas';
-import { useGameStore } from '@/app/store/store';
+import { useAudioStore, useGameStore } from '@/app/store/store';
 import { Button } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,7 @@ import { z } from 'zod';
 export const EnterNameView = () => {
     const singlePlayer = useGameStore(state => state.singlePlayer);
     const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
+    const setIsPlaying = useAudioStore(state => state.setIsPlaying);
     const room = useGameStore(state => state.room);
     const form = useForm<z.infer<typeof EnterNameViewSchema>>({
         resolver: zodResolver(EnterNameViewSchema),
@@ -21,6 +22,7 @@ export const EnterNameView = () => {
 
     const onSubmit = (values: { username: string }) => {
         const { username } = values;
+        setIsPlaying(true);
         socket.emit('join-room', { code: room.code, username });
         setSinglePlayer({
             ...singlePlayer!,

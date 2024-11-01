@@ -12,7 +12,7 @@ export default function Home() {
                 <p className='text-2xl text-center my-10'>Ready to play? Create a room or join with a code, and let the fun begin!</p>
                 <div className='grid grid-cols-1 md:grid-cols-2 justify-between'>
                     <section className=''>
-                        <Card className='p-5'>
+                        <Card className='p-5 bg-background'>
                             <CardContent>
                                 <h2 className='text-2xl font-semibold mb-2'>How to Play:</h2>
                                 <ul className='list-disc list-inside mb-4 flex flex-col gap-2'>
@@ -23,7 +23,7 @@ export default function Home() {
                                 </ul>
                             </CardContent>
                         </Card>
-                        <Card className='p-5 mt-10'>
+                        <Card className='p-5 mt-10 bg-background'>
                             <CardContent>
                                 <h2 className='text-2xl font-semibold mb-2'>Rules:</h2>
                                 <ul className='list-disc list-inside mb-4 flex flex-col gap-2'>
