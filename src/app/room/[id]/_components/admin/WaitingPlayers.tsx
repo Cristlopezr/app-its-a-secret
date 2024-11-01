@@ -7,7 +7,10 @@ import { socket } from '@/lib/socket';
 
 export const WaitingPlayers = () => {
     const room = useGameStore(state => state.room);
-    const playersLeft = room.maxPlayers - room.players.length;
+
+    const currentPlayers = room.players.filter(({ username }) => username !== undefined);
+
+    const playersLeft = room.maxPlayers - currentPlayers.length;
 
     const onClickReveal = () => {
         socket.emit('reveal-secrets', { code: room.code });
@@ -25,7 +28,7 @@ export const WaitingPlayers = () => {
                 </CardContent>
             </Card>
             <div className='flex items-center gap-2 mt-5'>
-                {room.players.length < room.maxPlayers ? (
+                {currentPlayers.length < room.maxPlayers ? (
                     <div className='animate-pulse text-lg flex items-center gap-2'>
                         <div>Waiting for {playersLeft} more players to join...</div>
                     </div>

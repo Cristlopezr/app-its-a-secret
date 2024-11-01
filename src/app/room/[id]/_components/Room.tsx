@@ -17,12 +17,16 @@ export const Room = () => {
         });
 
         socket.on('joined-room', payload => {
-            setRoom(payload.room);
             setShowRoomView(true);
+        });
+
+        socket.on('update-users-in-room', payload => {
+            setRoom(payload.room);
         });
         return () => {
             socket.off('send-notification');
             socket.off('joined-room');
+            socket.off('update-users-in-room');
         };
     }, []);
 
