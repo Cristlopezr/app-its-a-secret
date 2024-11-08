@@ -1,3 +1,7 @@
 import { io } from 'socket.io-client';
 
-export const socket = io('http://localhost:3001');
+//Development
+/* export const socket = io('http://localhost:3001'); */
+
+//Production
+export const socket = io(process.env.WSS_URL);

@@ -5,50 +5,85 @@ import { JoinRoom } from './room/_components/JoinRoom';
 export default function Home() {
     return (
         <div className='min-h-screen'>
-            <div className='container mx-auto px-4 py-16 '>
-                <h1 className='text-6xl font-bold text-center mb-6'>Welcome to It's a Secret! 🤫</h1>
+            <div className='container mx-auto px-4 py-16'>
+                <h1 className='text-6xl font-bold text-center mb-6'>It's a Secret! 🤫</h1>
 
-                <h2 className='text-center text-3xl'>Gather your friends and get ready for a fun game of secrets and guesses!</h2>
-                <p className='text-2xl text-center my-10'>Ready to play? Create a room or join with a code, and let the fun begin!</p>
-                <div className='grid grid-cols-1 md:grid-cols-2 justify-between'>
-                    <section className=''>
-                        <Card className='p-5 bg-background'>
+                <h2 className='text-center text-3xl'>The ultimate party game where secrets come out to play!</h2>
+                <p className='text-2xl text-center my-10'>Share your secrets anonymously and see if your friends can figure out who wrote what!</p>
+
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+                    <section>
+                        <Card className='p-5 bg-background hover:shadow-lg transition-shadow'>
                             <CardContent>
-                                <h2 className='text-2xl font-semibold mb-2'>How to Play:</h2>
-                                <ul className='list-disc list-inside mb-4 flex flex-col gap-2'>
-                                    <li>Each player anonymously writes a secret.</li>
-                                    <li>The challenge is to guess which friend wrote each secret.</li>
-                                    <li>The faster you guess correctly, the more points you earn!</li>
-                                    <li>Scores stay hidden, so no one knows who wrote the secret, even if a player guessed all of them correctly.</li>
+                                <h2 className='text-2xl font-semibold mb-4'>🎮 Game Overview</h2>
+                                <ul className='space-y-3'>
+                                    <li className='flex items-center gap-2'>
+                                        <span className='text-xl'>👥</span>
+                                        <span>Gather at least 4 players!</span>
+                                    </li>
+                                    <li className='flex items-center gap-2'>
+                                        <span className='text-xl'>✍️</span>
+                                        <span>Write your juiciest secret (anonymously, of course!)</span>
+                                    </li>
+                                    <li className='flex items-center gap-2'>
+                                        <span className='text-xl'>🔍</span>
+                                        <span>Put on your detective hat and guess who wrote what</span>
+                                    </li>
+                                    <li className='flex items-center gap-2'>
+                                        <span className='text-xl'>⚡</span>
+                                        <span>Quick guesses earn more points - speed is key!</span>
+                                    </li>
+                                    <li className='flex items-center gap-2'>
+                                        <span className='text-xl'>🤐</span>
+                                        <span>Don't worry - your secret stays safe even after guesses</span>
+                                    </li>
                                 </ul>
                             </CardContent>
                         </Card>
-                        <Card className='p-5 mt-10 bg-background'>
+
+                        <Card className='p-5 mt-6 bg-background hover:shadow-lg transition-shadow'>
                             <CardContent>
-                                <h2 className='text-2xl font-semibold mb-2'>Rules:</h2>
-                                <ul className='list-disc list-inside mb-4 flex flex-col gap-2'>
-                                    <li>Each player writes a secret.</li>
-                                    <li>Everyone tries to guess which friend the secret belongs to.</li>
-                                    <li>If the secret on screen is yours, your vote won't count, whether you vote for yourself or someone else.</li>
-                                    <li>At the end of the game, the winner will be revealed, but the secrets stay safe!</li>
+                                <h2 className='text-2xl font-semibold mb-4'>📜 Quick Rules</h2>
+                                <ul className='space-y-3'>
+                                    <li className='flex items-center gap-2'>
+                                        <span className='text-xl'>1️⃣</span>
+                                        <span>One secret per player - make it interesting!</span>
+                                    </li>
+                                    <li className='flex items-center gap-2'>
+                                        <span className='text-xl'>2️⃣</span>
+                                        <span>Everyone gets to guess for each secret</span>
+                                    </li>
+                                    <li className='flex items-center gap-2'>
+                                        <span className='text-xl'>3️⃣</span>
+                                        <span>Votes on your own secret won't count (we'll know!)</span>
+                                    </li>
+                                    <li className='flex items-center gap-2'>
+                                        <span className='text-xl'>4️⃣</span>
+                                        <span>Winner gets crowned, secrets stay anonymous!</span>
+                                    </li>
                                 </ul>
                             </CardContent>
                         </Card>
                     </section>
-                    <section className='text-center p-10 max-w-xl self-center mx-auto w-full row-start-1 md:col-start-2'>
-                        <div className='mb-5'>
-                            <CreateRoom />
-                        </div>
-                        <div className='relative my-5'>
-                            <div className='absolute inset-0 flex items-center'>
-                                <span className='w-full border-t' />
+
+                    <section className='text-center p-10 max-w-xl self-center mx-auto w-full'>
+                        <div className='space-y-8'>
+                            <div className='transform hover:scale-105 transition-transform'>
+                                <CreateRoom />
                             </div>
-                            <div className='relative flex justify-center text-sm uppercase'>
-                                <span className='bg-background px-2'>Or</span>
+
+                            <div className='relative'>
+                                <div className='absolute inset-0 flex items-center'>
+                                    <span className='w-full border-t' />
+                                </div>
+                                <div className='relative flex justify-center text-sm uppercase'>
+                                    <span className='bg-background px-4 text-muted-foreground'>Or join one</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className='text-center'>
-                            <JoinRoom />
+
+                            <div className='transform hover:scale-105 transition-transform'>
+                                <JoinRoom />
+                            </div>
                         </div>
                     </section>
                 </div>
