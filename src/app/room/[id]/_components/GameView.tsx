@@ -1,4 +1,4 @@
-import { useGameStore } from '@/app/store/store';
+import { useAudioStore, useGameStore } from '@/app/store/store';
 import { Button } from '@/components/ui';
 import { ColorName, colorVariants } from '@/lib/constants';
 import { socket } from '@/lib/socket';
@@ -14,6 +14,7 @@ export const GameView = () => {
     const [isTimeUp, setIsTimeUp] = useState(false);
     const [infoText, setInfoText] = useState('Round starts in');
     const [selectedId, setSelectedId] = useState<string | null>(null);
+    const setCurrentMusicSrc = useAudioStore(state => state.setCurrentMusicSrc);
 
     useEffect(() => {
         socket.on('game-started', payload => {
@@ -34,6 +35,14 @@ export const GameView = () => {
             setIsTimeUp(true);
         });
 
+        socket.on('round-starts', () => {
+            setCurrentMusicSrc('/assets/game.mp3');
+        });
+
+        socket.on('round-waiting', () => {
+            setCurrentMusicSrc('/assets/round-starts-in.mp3');
+        });
+
         socket.on('timer-ended', () => {
             setIsTimeUp(false);
             setTimeToGuess(15);
@@ -51,6 +60,8 @@ export const GameView = () => {
             socket.off('timer-update');
             socket.off('timer-ended');
             socket.off('time-is-up');
+            socket.off('round-starts');
+            socket.off('round-waiting');
         };
     }, []);
 
@@ -77,7 +88,7 @@ export const GameView = () => {
 
     return (
         <div className='container text-center mx-auto min-h-screen px-10'>
-            <div className='text-4xl py-10'>{room.secrets[room.currentSecretIdx].secret}</div>
+            <div className='text-4xl py-10'>"{room.secrets[room.currentSecretIdx].secret}"</div>
             <div className='font-semibold text-3xl'>{timeToGuess}</div>
             <div className='font-semibold text-3xl mt-10 mb-5'>Who wrote it?</div>
             {/* Hacer que el mensaje sea random */}

@@ -5,7 +5,7 @@ import { JoinRoom } from './room/_components/JoinRoom';
 export default function Home() {
     return (
         <div className='min-h-screen'>
-            <div className='container mx-auto px-4 py-10 '>
+            <div className='container mx-auto px-4 py-16 '>
                 <h1 className='text-6xl font-bold text-center mb-6'>Welcome to It's a Secret! 🤫</h1>
 
                 <h2 className='text-center text-3xl'>Gather your friends and get ready for a fun game of secrets and guesses!</h2>

@@ -11,32 +11,29 @@ interface Props {
 
 export const AudioPlayer = ({ className }: Props) => {
     const currentMusic = useAudioStore(state => state.currentMusicSrc);
+    const setAudioRef = useAudioStore(state => state.setAudioRef);
+    const play = useAudioStore(state => state.play);
     const isPlaying = useAudioStore(state => state.isPlaying);
     const setIsPlaying = useAudioStore(state => state.setIsPlaying);
     const audioRef = useRef<HTMLAudioElement>(null);
-    
+
     useEffect(() => {
-        const handlePlayPause = async () => {
-            if (!audioRef.current) return;
-            try {
-                if (isPlaying) {
-                    await audioRef.current.play();
-                } else {
-                    await audioRef.current.pause();
-                }
-            } catch (error) {
-                console.error('Error handling audio play/pause:', error);
-            }
-        };
+        setAudioRef(audioRef);
+    }, []);
 
-        handlePlayPause();
-        return () => {};
-    }, [isPlaying]);
+    useEffect(() => {
+        if (isPlaying) {
+            play();
+        }
+    }, [currentMusic]);
 
+    const onSetIsPlaying = () => {
+        setIsPlaying(!isPlaying);
+    };
     return (
         <div>
-            {!isPlaying && <VolumeOff className={cn(className)} onClick={() => setIsPlaying(!isPlaying)} />}
-            {isPlaying && <Volume2 className={cn(className)} onClick={() => setIsPlaying(!isPlaying)} />}
+            {!isPlaying && <VolumeOff className={cn(className)} onClick={onSetIsPlaying} />}
+            {isPlaying && <Volume2 className={cn(className)} onClick={onSetIsPlaying} />}
             <audio className='invisible' ref={audioRef} src={currentMusic} loop autoPlay={false} />
         </div>
     );

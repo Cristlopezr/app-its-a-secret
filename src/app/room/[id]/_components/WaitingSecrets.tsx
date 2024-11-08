@@ -15,7 +15,6 @@ export const WaitingSecrets = ({ hasSubmittedSecret }: Props) => {
 
     const onStartGame = () => {
         socket.emit('game-starts', { code: room.code });
-        //mostrar el mensaje de que si vota por su mismo secreto no cuenta ni descuenta
     };
 
     return (
@@ -42,8 +41,6 @@ export const WaitingSecrets = ({ hasSubmittedSecret }: Props) => {
                     <SecretForm />
                 </section>
             )}
-
-            {/* Hacer que el icono sea random */}
             <PlayersList />
 
             {singlePlayer?.role === 'Admin' && (

@@ -2,9 +2,9 @@ import { useGameStore } from '@/app/store/store';
 import { socket } from '@/lib/socket';
 import { useEffect } from 'react';
 import { GameView } from './GameView';
-import { WaitingPlayers } from './admin/WaitingPlayers';
 import { WaitingSecrets } from './WaitingSecrets';
 import { GameFinished } from './GameFinished';
+import { WaitingPlayers } from './WaitingPlayers';
 
 export const AdminView = () => {
     const room = useGameStore(state => state.room);

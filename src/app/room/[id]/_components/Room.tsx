@@ -5,11 +5,14 @@ import { useEffect, useState } from 'react';
 import { RoomView } from './RoomView';
 import { EnterNameView } from './EnterNameView';
 import { useGameStore, useUiStore } from '@/app/store/store';
+import { useRouter } from 'next/navigation';
 
 export const Room = () => {
     const [showRoomView, setShowRoomView] = useState(false);
     const setNotification = useUiStore(state => state.setNotification);
     const setRoom = useGameStore(state => state.setRoom);
+    const singlePlayer = useGameStore(state => state.singlePlayer);
+    const router = useRouter();
 
     useEffect(() => {
         socket.on('send-notification', payload => {
@@ -29,6 +32,17 @@ export const Room = () => {
             socket.off('update-users-in-room');
         };
     }, []);
+
+    useEffect(() => {
+        // Redirect if there's no player
+        if (!singlePlayer) {
+            router.push('/');
+        }
+    }, [singlePlayer, router]);
+
+    if (!singlePlayer) {
+        return null; // Prevent rendering if redirecting
+    }
 
     if (!showRoomView) {
         return <EnterNameView />;

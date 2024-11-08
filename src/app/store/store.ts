@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Player, Room, RoomStatus } from '../interfaces/interfaces';
+import { RefObject } from 'react';
 
 interface GameState {
     singlePlayer: Player | undefined;
@@ -10,19 +11,46 @@ interface GameState {
 
 interface AudioState {
     currentMusicSrc: string;
+    audioRef: RefObject<HTMLAudioElement> | null;
+    setAudioRef: (audioRef: RefObject<HTMLAudioElement>) => void;
     setCurrentMusicSrc: (src: string) => void;
     isPlaying: boolean;
     setIsPlaying: (isPlaying: boolean) => void;
+    play: () => void;
 }
 
 export const useAudioStore = create<AudioState>()(set => ({
     currentMusicSrc: '/assets/start-end.mp3',
-    setCurrentMusicSrc: src => set(() => ({ currentMusicSrc: src })),
+    audioRef: null,
+    setAudioRef: audioRef => set(() => ({ audioRef })),
+    setCurrentMusicSrc: src =>
+        set(state => {
+            if (state.audioRef?.current) {
+                state.audioRef.current.pause();
+               /*  state.audioRef.current.src = src; */
+            }
+            return { currentMusicSrc: src };
+        }),
     isPlaying: false,
     setIsPlaying: isPlaying =>
-        set(() => ({
-            isPlaying: isPlaying,
-        })),
+        set(state => {
+            if (state.audioRef?.current) {
+                state.isPlaying ? state?.audioRef?.current.pause() : state?.audioRef?.current.play();
+            }
+            return {
+                isPlaying: isPlaying,
+            };
+        }),
+    play: () =>
+        set(state => {
+            if (state.audioRef?.current) {
+                state.audioRef?.current?.load();
+                state.audioRef?.current?.play();
+            }
+            return {
+                isPlaying: true,
+            };
+        }),
 }));
 
 export const useGameStore = create<GameState>()(set => ({
