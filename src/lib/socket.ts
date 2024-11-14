@@ -4,4 +4,5 @@ import { io } from 'socket.io-client';
 /* export const socket = io('http://localhost:3001'); */
 
 //Production
-export const socket = io(process.env.WSS_URL);
+console.log('URL ', process.env.NEXT_PUBLIC_WSS_URL);
+export const socket = io(process.env.NEXT_PUBLIC_WSS_URL, { transports: ['websocket'] });
