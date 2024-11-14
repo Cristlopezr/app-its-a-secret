@@ -1,6 +1,5 @@
 import { useGameStore } from '@/app/store/store';
 import { ColorName, colorVariants, IconName, icons } from '@/lib/constants';
-import React, { use } from 'react';
 
 interface Props {
     sortedByScores?: boolean;

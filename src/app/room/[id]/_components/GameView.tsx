@@ -88,11 +88,11 @@ export const GameView = () => {
 
     return (
         <div className='container text-center mx-auto min-h-screen px-10'>
-            <div className='text-4xl py-10'>"{room.secrets[room.currentSecretIdx].secret}"</div>
+            <div className='text-4xl py-10'>&quot;{room.secrets[room.currentSecretIdx].secret}&quot;</div>
             <div className='font-semibold text-3xl'>{timeToGuess}</div>
             <div className='font-semibold text-3xl mt-10 mb-5'>Who wrote it?</div>
             {/* Hacer que el mensaje sea random */}
-            <div className={`text-lg ${selectedId ? 'opacity-100' : 'opacity-0'}`}>Your answer's in! But who knows if you’re onto something?</div>
+            <div className={`text-lg ${selectedId ? 'opacity-100' : 'opacity-0'}`}>Your answer&apos;s in! But who knows if you&apos;re onto something?</div>
             <div className='grid grid-cols-2 py-10 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5 place-items-center'>
                 {room.players.map(({ id, username, color }) => (
                     <div

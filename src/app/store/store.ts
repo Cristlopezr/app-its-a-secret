@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Player, Room, RoomStatus } from '../interfaces/interfaces';
+import { Player, Room } from '../interfaces/interfaces';
 import { RefObject } from 'react';
 
 interface GameState {
@@ -27,7 +27,7 @@ export const useAudioStore = create<AudioState>()(set => ({
         set(state => {
             if (state.audioRef?.current) {
                 state.audioRef.current.pause();
-               /*  state.audioRef.current.src = src; */
+                /*  state.audioRef.current.src = src; */
             }
             return { currentMusicSrc: src };
         }),
@@ -35,7 +35,11 @@ export const useAudioStore = create<AudioState>()(set => ({
     setIsPlaying: isPlaying =>
         set(state => {
             if (state.audioRef?.current) {
-                state.isPlaying ? state?.audioRef?.current.pause() : state?.audioRef?.current.play();
+                if (state.isPlaying) {
+                    state.audioRef.current.pause();
+                } else {
+                    state.audioRef.current.play();
+                }
             }
             return {
                 isPlaying: isPlaying,

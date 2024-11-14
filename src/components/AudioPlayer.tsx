@@ -3,7 +3,7 @@
 import { useAudioStore } from '@/app/store/store';
 import { cn } from '@/lib/utils';
 import { Volume2, VolumeOff } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface Props {
     className?: string;

@@ -37,7 +37,7 @@ export const WaitingSecrets = ({ hasSubmittedSecret }: Props) => {
                 <section className='text-center'>
                     <div className='text-xl font-semibold my-2 animate-pulse'>Waiting for players to reveal their secrets...</div>
                     <div className='my-2'>{secretsLeft} more player needs to reveal their secret.</div>
-                    <div className='text-xl font-semibold my-5'>Don't forget to hide your screen.</div>
+                    <div className='text-xl font-semibold my-5'>Don&apos;t forget to hide your screen.</div>
                     <SecretForm />
                 </section>
             )}

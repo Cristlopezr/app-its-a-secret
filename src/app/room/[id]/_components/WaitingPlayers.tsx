@@ -20,14 +20,14 @@ export const WaitingPlayers = () => {
     if (singlePlayer?.role === 'Admin') {
         return (
             <div className='flex flex-col items-center gap-10 min-h-screen pt-20'>
-                <h1 className='text-4xl font-bold mb-8'>It's a Secret!</h1>
+                <h1 className='text-4xl font-bold mb-8'>It&apos;s a Secret!</h1>
                 <Card className='w-full max-w-2xl bg-background'>
                     <CardHeader>
                         <CardTitle className='text-2xl'>Room Code: {room.code}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className='text-base mb-2'>Invite at least 3 friends to join the fun! Share this room code with them.</p>
-                        <p className='text-base'>Once you're all set and ready to reveal your secrets, click the button below to get started!</p>
+                        <p className='text-base'>Once you&apos;re all set and ready to reveal your secrets, click the button below to get started!</p>
                     </CardContent>
                 </Card>
                 <div className='flex items-center gap-2 mt-5'>

@@ -6,7 +6,7 @@ export default function Home() {
     return (
         <div className='min-h-screen'>
             <div className='container mx-auto px-4 py-16'>
-                <h1 className='text-6xl font-bold text-center mb-6'>It's a Secret! 🤫</h1>
+                <h1 className='text-6xl font-bold text-center mb-6'>It&apos;s a Secret! 🤫</h1>
 
                 <h2 className='text-center text-3xl'>The ultimate party game where secrets come out to play!</h2>
                 <p className='text-2xl text-center my-10'>Share your secrets anonymously and see if your friends can figure out who wrote what!</p>
@@ -35,7 +35,7 @@ export default function Home() {
                                     </li>
                                     <li className='flex items-center gap-2'>
                                         <span className='text-xl'>🤐</span>
-                                        <span>Don't worry - your secret stays safe even after guesses</span>
+                                        <span>Don&apos;t worry - your secret stays safe even after guesses</span>
                                     </li>
                                 </ul>
                             </CardContent>
@@ -55,7 +55,7 @@ export default function Home() {
                                     </li>
                                     <li className='flex items-center gap-2'>
                                         <span className='text-xl'>3️⃣</span>
-                                        <span>Votes on your own secret won't count (we'll know!)</span>
+                                        <span>Votes on your own secret won&apos;t count (we&apos;ll know!)</span>
                                     </li>
                                     <li className='flex items-center gap-2'>
                                         <span className='text-xl'>4️⃣</span>

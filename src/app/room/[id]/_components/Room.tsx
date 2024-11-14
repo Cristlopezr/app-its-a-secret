@@ -19,7 +19,7 @@ export const Room = () => {
             setNotification(payload.message);
         });
 
-        socket.on('joined-room', payload => {
+        socket.on('joined-room', () => {
             setShowRoomView(true);
         });
 
