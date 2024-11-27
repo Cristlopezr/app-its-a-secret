@@ -30,9 +30,9 @@ export const JoinRoom = () => {
     }, []);
     return (
         <div>
-            {notification}
             <p className='mb-2'>Join a Room</p>
             <EnterCodeForm />
+            <p className='text-destructive font-semibold pt-2'>{notification}</p>
         </div>
     );
 };

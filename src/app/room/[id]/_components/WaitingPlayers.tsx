@@ -33,7 +33,7 @@ export const WaitingPlayers = () => {
                 <div className='flex items-center gap-2 mt-5'>
                     {currentPlayers.length < room.maxPlayers ? (
                         <div className='animate-pulse text-lg flex items-center gap-2'>
-                            <div>Waiting for {playersLeft} more players to join...</div>
+                            {playersLeft !== 1 ? <div>Waiting for {playersLeft} more players to join...</div> : <div>Waiting for {playersLeft} more player to join...</div>}
                         </div>
                     ) : (
                         <>
