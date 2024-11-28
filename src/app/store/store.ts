@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Player, Room } from '../interfaces/interfaces';
 import { RefObject } from 'react';
+import { audioUrls } from '@/lib/constants';
 
 interface GameState {
     singlePlayer: Player | undefined;
@@ -20,7 +21,7 @@ interface AudioState {
 }
 
 export const useAudioStore = create<AudioState>()(set => ({
-    currentMusicSrc: '/assets/start-end.mp3',
+    currentMusicSrc: audioUrls.startEnd,
     audioRef: null,
     setAudioRef: audioRef => set(() => ({ audioRef })),
     setCurrentMusicSrc: src =>

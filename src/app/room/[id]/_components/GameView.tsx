@@ -1,6 +1,6 @@
 import { useAudioStore, useGameStore } from '@/app/store/store';
 import { Button } from '@/components/ui';
-import { ColorName, colorVariants } from '@/lib/constants';
+import { audioUrls, ColorName, colorVariants } from '@/lib/constants';
 import { socket } from '@/lib/socket';
 import { useEffect, useState } from 'react';
 
@@ -36,11 +36,11 @@ export const GameView = () => {
         });
 
         socket.on('round-starts', () => {
-            setCurrentMusicSrc('/assets/game.mp3');
+            setCurrentMusicSrc(audioUrls.game);
         });
 
         socket.on('round-waiting', () => {
-            setCurrentMusicSrc('/assets/round-starts-in.mp3');
+            setCurrentMusicSrc(audioUrls.roundStartsIn);
         });
 
         socket.on('timer-ended', () => {
