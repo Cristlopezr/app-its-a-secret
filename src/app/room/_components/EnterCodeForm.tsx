@@ -1,9 +1,13 @@
+import { SocketResponse } from '@/app/interfaces/interfaces';
 import { JoinFormSchema } from '@/app/schemas/schemas';
+import { Scope, useUiStore } from '@/app/store/store';
 import { Button } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@/components/ui/input-otp';
 import { socket } from '@/lib/socket';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -15,8 +19,26 @@ export const EnterCodeForm = () => {
         },
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+    const setNotification = useUiStore(state => state.setNotification);
+    const clearNotifications = useUiStore(state => state.clearNotifications);
+
     const onSubmit = (values: { code: string }) => {
-        socket.emit('enter-code', { code: values.code });
+        setIsLoading(true);
+        clearNotifications();
+        //Callback to handle any errors
+        //Response may have an error if room is not found
+        socket.timeout(5000).emit('enter-code', { code: values.code }, (err: { message: string }, response: SocketResponse) => {
+            console.log({ err, response });
+            if (err) {
+                setNotification(Scope.JoinRoom, 'An error has occurred, please try again later.');
+            } else {
+                if (!response.ok) {
+                    setNotification(Scope.JoinRoom, response.message);
+                }
+            }
+            setIsLoading(false);
+        });
     };
 
     return (
@@ -49,8 +71,15 @@ export const EnterCodeForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button className='w-full' type='submit'>
-                    Join room
+                <Button className='w-full' type='submit' disabled={isLoading}>
+                    {isLoading ? (
+                        <>
+                            <span className='mr-4'>Loading...</span>
+                            <LoaderCircle className='animate-spin' />
+                        </>
+                    ) : (
+                        'Join room'
+                    )}
                 </Button>
             </form>
         </Form>

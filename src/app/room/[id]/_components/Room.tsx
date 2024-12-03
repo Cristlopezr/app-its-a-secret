@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 
 export const Room = () => {
     const [showRoomView, setShowRoomView] = useState(false);
-    const setNotification = useUiStore(state => state.setNotification);
+    const setNotification = useUiStore(state => state.setNotifications);
     const setRoom = useGameStore(state => state.setRoom);
     const singlePlayer = useGameStore(state => state.singlePlayer);
     const router = useRouter();

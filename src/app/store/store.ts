@@ -65,12 +65,25 @@ export const useGameStore = create<GameState>()(set => ({
     setRoom: room => set(() => ({ room })),
 }));
 
+export enum Scope {
+    CreateRoom = 'createRoom',
+    JoinRoom = 'joinRoom',
+}
+
 interface UiState {
-    notification: string;
-    setNotification: (notifaction: string) => void;
+    notifications: Partial<Record<Scope, string>>;
+    setNotification: (scope: Scope, message: string) => void;
+    clearNotifications: () => void;
 }
 
 export const useUiStore = create<UiState>()(set => ({
-    notification: '',
-    setNotification: notification => set(() => ({ notification })),
+    notifications: {},
+    setNotification: (scope, message) =>
+        set(state => ({
+            notifications: {
+                ...state.notifications,
+                [scope]: message,
+            },
+        })),
+    clearNotifications: () => set(() => ({ notifications: {} })),
 }));

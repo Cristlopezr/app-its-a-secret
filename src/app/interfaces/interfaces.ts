@@ -33,3 +33,8 @@ export interface Room {
     maxPlayers: number;
     currentSecretIdx: number;
 }
+
+export interface SocketResponse {
+    message: string;
+    ok: false;
+}

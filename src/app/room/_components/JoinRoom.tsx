@@ -10,18 +10,13 @@ export const JoinRoom = () => {
     const router = useRouter();
     const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
     const setRoom = useGameStore(state => state.setRoom);
-    const notification = useUiStore(state => state.notification);
-    const setNotification = useUiStore(state => state.setNotification);
+    const notifications = useUiStore(state => state.notifications);
 
     useEffect(() => {
         socket.on('correct-code', payload => {
             setSinglePlayer(payload.player);
             setRoom(payload.room);
             router.push(`/room/${payload.room.id}`);
-        });
-
-        socket.on('send-notification', payload => {
-            setNotification(payload.message);
         });
 
         return () => {
@@ -32,7 +27,7 @@ export const JoinRoom = () => {
         <div>
             <p className='mb-2'>Join a Room</p>
             <EnterCodeForm />
-            <p className='text-destructive font-semibold pt-2'>{notification}</p>
+            <p className='text-destructive font-semibold pt-2'>{notifications?.joinRoom}</p>
         </div>
     );
 };
