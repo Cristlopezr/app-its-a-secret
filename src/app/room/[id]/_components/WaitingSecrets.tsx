@@ -11,6 +11,7 @@ interface Props {
 export const WaitingSecrets = ({ hasSubmittedSecret }: Props) => {
     const room = useGameStore(state => state.room);
     const singlePlayer = useGameStore(state => state.singlePlayer);
+    const admin = useGameStore(state => state.room.players).filter(player => player.role === 'Admin')[0];
     const secretsLeft = room.players.length - room.secrets.length;
 
     const onStartGame = () => {
@@ -47,7 +48,7 @@ export const WaitingSecrets = ({ hasSubmittedSecret }: Props) => {
             )}
             <PlayersList />
 
-            {singlePlayer?.role === 'Admin' && (
+            {singlePlayer && singlePlayer.id === admin.id && (
                 <Button onClick={onStartGame} disabled={room.secrets.length !== room.players.length} className='font-semibold py-3 px-8 rounded text-xl transition-all duration-200'>
                     Start Game
                 </Button>

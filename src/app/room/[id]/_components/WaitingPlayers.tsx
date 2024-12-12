@@ -8,6 +8,7 @@ import { PlayersList } from './PlayersList';
 export const WaitingPlayers = () => {
     const room = useGameStore(state => state.room);
     const singlePlayer = useGameStore(state => state.singlePlayer);
+    const admin = useGameStore(state => state.room.players).filter(player => player.role === 'Admin')[0];
 
     const currentPlayers = room.players.filter(({ username }) => username !== undefined);
 
@@ -17,7 +18,7 @@ export const WaitingPlayers = () => {
         socket.emit('reveal-secrets', { code: room.code });
     };
 
-    if (singlePlayer?.role === 'Admin') {
+    if (singlePlayer && singlePlayer.id === admin.id) {
         return (
             <div className='flex flex-col items-center gap-10 min-h-screen pt-20'>
                 <h1 className='text-4xl font-bold mb-8'>It&apos;s a Secret!</h1>

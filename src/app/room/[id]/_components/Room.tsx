@@ -2,23 +2,18 @@
 
 import { socket } from '@/lib/socket';
 import { useEffect, useState } from 'react';
-import { RoomView } from './RoomView';
-import { EnterNameView } from './EnterNameView';
-import { useGameStore, useUiStore } from '@/app/store/store';
+import { RoomView } from '../views/RoomView';
+import { EnterNameView } from '../views/EnterNameView';
+import { useGameStore } from '@/app/store/store';
 import { useRouter } from 'next/navigation';
 
 export const Room = () => {
     const [showRoomView, setShowRoomView] = useState(false);
-    const setNotification = useUiStore(state => state.setNotifications);
     const setRoom = useGameStore(state => state.setRoom);
     const singlePlayer = useGameStore(state => state.singlePlayer);
     const router = useRouter();
 
     useEffect(() => {
-        socket.on('send-notification', payload => {
-            setNotification(payload.message);
-        });
-
         socket.on('joined-room', () => {
             setShowRoomView(true);
         });
@@ -27,7 +22,6 @@ export const Room = () => {
             setRoom(payload.room);
         });
         return () => {
-            socket.off('send-notification');
             socket.off('joined-room');
             socket.off('update-users-in-room');
         };

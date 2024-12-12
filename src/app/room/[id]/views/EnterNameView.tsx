@@ -1,17 +1,25 @@
+import { SocketResponse } from '@/app/interfaces/interfaces';
 import { EnterNameViewSchema } from '@/app/schemas/schemas';
-import { useGameStore } from '@/app/store/store';
+import { Scope, useGameStore, useUiStore } from '@/app/store/store';
 import { Button } from '@/components/ui';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { socket } from '@/lib/socket';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { LoaderCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 export const EnterNameView = () => {
     const singlePlayer = useGameStore(state => state.singlePlayer);
     const setSinglePlayer = useGameStore(state => state.setSinglePlayer);
+    const admin = useGameStore(state => state.room.players).filter(player => player.role === 'Admin')[0];
     const room = useGameStore(state => state.room);
+    const setNotification = useUiStore(state => state.setNotification);
+    const clearNotifications = useUiStore(state => state.clearNotifications);
+    const notifications = useUiStore(state => state.notifications);
+    const [isLoading, setIsLoading] = useState(false);
     const form = useForm<z.infer<typeof EnterNameViewSchema>>({
         resolver: zodResolver(EnterNameViewSchema),
         defaultValues: {
@@ -19,9 +27,26 @@ export const EnterNameView = () => {
         },
     });
 
+    useEffect(() => {
+        clearNotifications();
+
+        return () => {};
+    }, []);
+
     const onSubmit = (values: { username: string }) => {
         const { username } = values;
-        socket.emit('join-room', { code: room.code, username });
+        setIsLoading(true);
+        socket.timeout(5000).emit('join-room', { code: room.code, username }, (err: { message: string }, response: SocketResponse) => {
+            console.log({ err, response });
+            if (err) {
+                setNotification(Scope.EnterName, 'An error has occurred, please try again later.');
+            } else {
+                if (!response.ok) {
+                    setNotification(Scope.EnterName, response.message);
+                }
+            }
+            setIsLoading(false);
+        });
         setSinglePlayer({
             ...singlePlayer!,
             username,
@@ -46,7 +71,17 @@ export const EnterNameView = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button type='submit'>{singlePlayer?.role === 'Admin' ? 'Create room' : 'Join room'}</Button>
+                        {isLoading ? (
+                            <Button disabled>
+                                <span className='mr-4'>Loading...</span>
+                                <LoaderCircle className='animate-spin' />
+                            </Button>
+                        ) : (
+                            <>
+                                <Button type='submit'>{singlePlayer && singlePlayer.id === admin.id ? 'Create room' : 'Join room'}</Button>
+                                <p className='text-destructive font-semibold'>{notifications?.enterName}</p>
+                            </>
+                        )}
                     </form>
                 </Form>
             </div>

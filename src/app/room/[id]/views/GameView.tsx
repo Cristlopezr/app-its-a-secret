@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 export const GameView = () => {
     const room = useGameStore(state => state.room);
     const singlePlayer = useGameStore(state => state.singlePlayer);
+    const admin = useGameStore(state => state.room.players).filter(player => player.role === 'Admin')[0];
     const setRoom = useGameStore(state => state.setRoom);
 
     const [timeToGuess, setTimeToGuess] = useState(15);
@@ -49,7 +50,7 @@ export const GameView = () => {
             setSelectedId(null);
             setInfoText('New round starts in');
             setTimeToStartGame(5);
-            if (singlePlayer?.role === 'Admin') {
+            if (singlePlayer && singlePlayer.id === admin.id) {
                 socket.emit('new-round', { code: room.code });
             }
         });

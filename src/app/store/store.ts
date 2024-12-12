@@ -68,6 +68,7 @@ export const useGameStore = create<GameState>()(set => ({
 export enum Scope {
     CreateRoom = 'createRoom',
     JoinRoom = 'joinRoom',
+    EnterName = 'enterName'
 }
 
 interface UiState {

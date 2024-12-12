@@ -2,9 +2,9 @@ import { useGameStore } from '@/app/store/store';
 import { useEffect } from 'react';
 import { socket } from '@/lib/socket';
 import { GameView } from './GameView';
-import { WaitingSecrets } from './WaitingSecrets';
-import { GameFinished } from './GameFinished';
-import { WaitingPlayers } from './WaitingPlayers';
+import { WaitingSecrets } from '../_components/WaitingSecrets';
+import { GameFinished } from '../_components/GameFinished';
+import { WaitingPlayers } from '../_components/WaitingPlayers';
 
 export const PlayerView = () => {
     const room = useGameStore(state => state.room);
