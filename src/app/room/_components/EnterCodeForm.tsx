@@ -31,12 +31,13 @@ export const EnterCodeForm = () => {
         socket.timeout(5000).emit('enter-code', { code: values.code }, (err: { message: string }, response: SocketResponse) => {
             if (err) {
                 setNotification(Scope.JoinRoom, 'An error has occurred, please try again later.');
+                setIsLoading(false);
             } else {
                 if (!response.ok) {
                     setNotification(Scope.JoinRoom, response.message);
+                    setIsLoading(false);
                 }
             }
-            setIsLoading(false);
         });
     };
 

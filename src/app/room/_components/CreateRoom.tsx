@@ -35,8 +35,8 @@ export const CreateRoom = () => {
         socket.timeout(5000).emit('create-room', (err: { message: string }) => {
             if (err) {
                 setNotification(Scope.CreateRoom, 'An error has occurred, please try again later.');
+                setIsLoading(false);
             }
-            setIsLoading(false);
         });
     };
 
