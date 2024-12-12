@@ -8,6 +8,8 @@ interface GameState {
     room: Room;
     setSinglePlayer: (player: Player) => void;
     setRoom: (room: Room) => void;
+    setRoomStatus: (status: Room['status']) => void;
+    setRoomCurrentSecretIdx: (currentSecretIdx: number) => void;
 }
 
 interface AudioState {
@@ -63,12 +65,26 @@ export const useGameStore = create<GameState>()(set => ({
     room: { code: '', id: '', status: 'waitingPlayers', secrets: [], players: [], config: [], maxPlayers: 0, currentSecretIdx: 0 },
     setSinglePlayer: player => set(() => ({ singlePlayer: player })),
     setRoom: room => set(() => ({ room })),
+    setRoomStatus: status =>
+        set(state => ({
+            room: {
+                ...state.room,
+                status,
+            },
+        })),
+    setRoomCurrentSecretIdx: currentSecretIdx =>
+        set(state => ({
+            room: {
+                ...state.room,
+                currentSecretIdx,
+            },
+        })),
 }));
 
 export enum Scope {
     CreateRoom = 'createRoom',
     JoinRoom = 'joinRoom',
-    EnterName = 'enterName'
+    EnterName = 'enterName',
 }
 
 interface UiState {

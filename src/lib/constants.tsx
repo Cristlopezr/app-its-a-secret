@@ -50,7 +50,7 @@ export const colorVariants = {
 const audioBaseUrl = 'https://res.cloudinary.com/cine-independiente/video/upload';
 
 export const audioUrls = {
-    startEnd: '',//`${audioBaseUrl}/v1732812817/its-a-secret-audios/cskk8dziuxxlfwkvke8l.mp3`,
-    roundStartsIn: '',//`${audioBaseUrl}/v1732812293/its-a-secret-audios/guojpilwykeqbznzeg1y.mp3`,
-    game: '',//`${audioBaseUrl}/v1732813223/its-a-secret-audios/ueceo1zfpsndtm5clwdp.mp3`,
+    startEnd: `${audioBaseUrl}/v1732812817/its-a-secret-audios/cskk8dziuxxlfwkvke8l.mp3`,
+    roundStartsIn: `${audioBaseUrl}/v1732812293/its-a-secret-audios/guojpilwykeqbznzeg1y.mp3`,
+    game: `${audioBaseUrl}/v1732813223/its-a-secret-audios/ueceo1zfpsndtm5clwdp.mp3`,
 };

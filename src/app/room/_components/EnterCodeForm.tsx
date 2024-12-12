@@ -29,7 +29,6 @@ export const EnterCodeForm = () => {
         //Callback to handle any errors
         //Response may have an error if room is not found
         socket.timeout(5000).emit('enter-code', { code: values.code }, (err: { message: string }, response: SocketResponse) => {
-            console.log({ err, response });
             if (err) {
                 setNotification(Scope.JoinRoom, 'An error has occurred, please try again later.');
             } else {

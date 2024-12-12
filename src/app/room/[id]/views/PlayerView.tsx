@@ -32,7 +32,6 @@ export const PlayerView = () => {
         };
     }, []);
 
-    console.log(room.status);
     if (room.status === 'waitingPlayers') {
         return <WaitingPlayers />;
     }

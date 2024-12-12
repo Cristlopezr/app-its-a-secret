@@ -9,6 +9,8 @@ export const GameView = () => {
     const singlePlayer = useGameStore(state => state.singlePlayer);
     const admin = useGameStore(state => state.room.players).filter(player => player.role === 'Admin')[0];
     const setRoom = useGameStore(state => state.setRoom);
+    const setRoomStatus = useGameStore(state => state.setRoomStatus);
+    const setRoomCurrentSecretIdx = useGameStore(state => state.setRoomCurrentSecretIdx);
 
     const [timeToGuess, setTimeToGuess] = useState(15);
     const [timeToStartGame, setTimeToStartGame] = useState(5);
@@ -32,7 +34,8 @@ export const GameView = () => {
         });
 
         socket.on('time-is-up', payload => {
-            setRoom(payload.room);
+            setRoomStatus(payload.status);
+            setRoomCurrentSecretIdx(payload.currentSecretIdx);
             setIsTimeUp(true);
         });
 

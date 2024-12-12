@@ -37,7 +37,6 @@ export const EnterNameView = () => {
         const { username } = values;
         setIsLoading(true);
         socket.timeout(5000).emit('join-room', { code: room.code, username }, (err: { message: string }, response: SocketResponse) => {
-            console.log({ err, response });
             if (err) {
                 setNotification(Scope.EnterName, 'An error has occurred, please try again later.');
             } else {
