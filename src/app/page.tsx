@@ -1,6 +1,6 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { CreateRoom } from './room/_components/CreateRoom';
-import { JoinRoom } from './room/_components/JoinRoom';
+import { Card, CardContent } from '@/app/_components/ui/card';
+import { CreateRoom } from './(game)/room/_components/CreateRoom';
+import { JoinRoom } from './(game)/room/_components/JoinRoom';
 
 export default function Home() {
     return (

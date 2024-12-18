@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Player, Room } from '../interfaces/interfaces';
+import { Player, Room } from '../interfaces';
 import { RefObject } from 'react';
 import { audioUrls } from '@/lib/constants';
 
@@ -85,6 +85,7 @@ export enum Scope {
     CreateRoom = 'createRoom',
     JoinRoom = 'joinRoom',
     EnterName = 'enterName',
+    General = 'general',
 }
 
 interface UiState {
